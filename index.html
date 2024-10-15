@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recherche d'entreprises</title>
+    <title>Forge - Recherche d'entreprise</title>
+    <link rel="icon" type="image/png" href="icon.png">
     
     <!-- Include Choices.js via CDN -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css"/>
@@ -615,6 +616,57 @@
             outline: none;
             box-shadow: none;
         }
+
+        /* Style for all labels in the filter section */
+        .filter-group label,
+        .email-group label {
+            display: block;
+            margin-bottom: 0.25rem;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        /* Ensure Choices.js labels are consistent */
+        .choices__label {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        /* Additional styling for Choices.js to ensure consistency */
+        .choices {
+            margin-bottom: 1rem;
+        }
+
+        .choices__inner {
+            background-color: white;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 14px;
+            min-height: auto;
+            padding: 0.5rem 0.75rem;
+        }
+
+        .choices__list--single {
+            padding: 0;
+        }
+
+        .choices__list--multiple .choices__item {
+            background-color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 2px;
+            color: white;
+            font-size: 12px;
+            margin-bottom: 0;
+            margin-right: 3px;
+            padding: 2px 8px;
+        }
+
+        .choices__list--multiple .choices__item.is-highlighted {
+            background-color: var(--hover-color);
+            border: 1px solid var(--hover-color);
+        }
     </style>
 </head>
 <body>
@@ -634,9 +686,11 @@
                 <input type="text" id="siren" name="siren" placeholder="Entrez un SIREN...">
 
                 <!-- Multiselect Code NAF -->
-                <label for="code_naf">Code NAF :</label>
                 <div class="filter-group">
-                    <select id="code_naf" name="activite_principale" multiple></select>
+                    <label for="code_naf">Code NAF</label>
+                    <select id="code_naf" name="code_naf" multiple>
+                        <!-- Options for Code NAF -->
+                    </select>
                 </div>
 
                 <!-- Multiselect Département -->
@@ -1177,6 +1231,11 @@
             new Choices('#section_activite_principale', {
                 removeItemButton: true,
                 placeholderValue: 'Sélectionnez les activités principales',
+            });
+
+            new Choices('#code_naf', {
+                removeItemButton: true,
+                placeholderValue: 'Sélectionnez les codes NAF',
             });
 
             // Your existing code for other Choices.js initializations
