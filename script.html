@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recherche d'entreprises</title>
+    
+    <!-- Include Choices.js via CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css"/>
+    
+    <!-- Include Inter font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --background-color: #ffffff;
+            --text-color: #202124;
+            --border-color: #e0e0e0;
+            --primary-color: #1a73e8;
+            --hover-color: #f8f9fa;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background-color);
+            background-image: 
+                linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
+            background-size: 20px 20px;
+            color: var(--text-color);
+            line-height: 1.5;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background-color: #ffffff;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .navbar-brand {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .navbar-button,
+        button[type="submit"] {
+            background-color: black;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .navbar-button:hover,
+        button[type="submit"]:hover {
+            background-color: #333;
+        }
+
+        .content {
+            display: flex;
+            padding: 2rem;
+            gap: 2rem;
+        }
+
+        .filters {
+            flex: 0 0 300px; /* Fixed width */
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            height: fit-content;
+        }
+
+        .results {
+            flex: 1;
+        }
+
+        h1, h2 {
+            margin-bottom: 1rem;
+            font-weight: 600;
+            font-size: 1.25rem;
+        }
+
+        form {
+            display: grid;
+            gap: 1rem;
+        }
+
+        label {
+            font-weight: 500;
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+        }
+
+        input[type="text"], input[type="date"], input[type="number"], select, .choices__inner {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 0.875rem;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus, input[type="date"]:focus, input[type="number"]:focus, select:focus, .choices__inner:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        button[type="submit"] {
+            background-color: #0F172A;
+            color: #F8FAFC;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            margin: 0 0 0 24px;
+            padding: 8px 16px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            white-space: nowrap;
+            border-radius: 6px; /* This is a common value for 'rounded-md' */
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #1E293B; /* A slightly lighter shade for hover effect */
+        }
+
+        button[type="submit"]:focus {
+            outline: 2px solid #60A5FA; /* A light blue color for focus ring */
+            outline-offset: 2px;
+        }
+
+        /* Ensure the button is keyboard focusable */
+        button[type="submit"]:focus-visible {
+            outline: 2px solid #60A5FA;
+            outline-offset: 2px;
+        }
+
+        .table-container {
+            background-color: white;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .blur-overlay {
+            display: none;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 200px;
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,1));
+            pointer-events: none;
+        }
+
+        .contact-button {
+            display: none;
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--primary-color);
+            color: #ffffff;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            z-index: 10;
+        }
+
+        .contact-button:hover {
+            background-color: var(--hover-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 12px;
+        }
+
+        th {
+            font-weight: 600;
+            color: var(--text-color);
+            white-space: nowrap;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background-color: var(--hover-color);
+        }
+
+        .blurred {
+            filter: blur(4px);
+            opacity: 0.7;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 1rem;
+        }
+
+        .contact-button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .contact-button:hover {
+            background-color: var(--hover-color);
+        }
+
+        .total-results {
+            background-color: white;
+            color: var(--text-color);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            border: 1px solid var(--border-color);
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 1rem;
+        }
+
+        .results-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .action-button {
+            background-color: white;
+            color: var(--text-color);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .action-button:hover {
+            background-color: var(--hover-color);
+        }
+
+        .contact-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+        }
+
+        .results-container {
+            position: relative;
+        }
+
+        .blurred-row {
+            filter: blur(4px);
+            opacity: 0.7;
+        }
+
+        .blurred-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 5;
+        }
+
+        /* Styles for filter inputs */
+        .filter-group {
+            margin-bottom: 0.75rem;
+        }
+
+        .filter-group label {
+            display: block;
+            margin-bottom: 0.25rem;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .filter-group input,
+        .filter-group select,
+        .choices__inner {
+            width: 100%;
+            padding: 0.375rem 0.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 12px;
+            transition: border-color 0.3s ease;
+        }
+
+        /* Choices.js custom styling */
+        .choices__inner {
+            min-height: auto;
+            padding: 0.375rem 0.5rem;
+        }
+
+        .choices__list--multiple .choices__item {
+            font-size: 12px;
+            padding: 2px 5px;
+            margin: 0 2px 2px 0;
+        }
+
+        .choices__list--dropdown .choices__item {
+            font-size: 12px;
+            padding: 5px 10px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-brand">forge</div>
+        <a href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ3iiHSOY893VluwPEd4rzSuZMjArS-2irOKMpNvDGTwRgkT_yvOzajyomEOq86_I_vrt88OCFJE" class="navbar-button">prendre rendez vous</a>
+    </nav>
+
+    <div class="content">
+        <div class="filters">
+            <h1>Recherche d'entreprises</h1>
+            <form id="search-form">
+                <label for="q">Recherche textuelle :</label>
+                <input type="text" id="q" name="q" placeholder="Entrez un texte...">
+
+                <label for="siren">SIREN :</label>
+                <input type="text" id="siren" name="siren" placeholder="Entrez un SIREN...">
+
+                <!-- Multiselect Code NAF -->
+                <label for="code_naf">Code NAF :</label>
+                <div class="filter-group">
+                    <select id="code_naf" name="activite_principale" multiple></select>
+                </div>
+
+                <!-- Multiselect Département -->
+                <label for="departement">Département :</label>
+                <select id="departement" name="departement" multiple></select>
+
+                <!-- Multiselect Tranche Effectif Salarié -->
+                <label for="tranche_effectif_salarie">Tranche d'effectif salarié :</label>
+                <select id="tranche_effectif_salarie" name="tranche_effectif_salarie" multiple></select>
+
+                <!-- Multiselect Section Activité Principale -->
+                <label for="section_activite_principale">Activité principale :</label>
+                <select id="section_activite_principale" name="section_activite_principale" multiple></select>
+
+                <!-- Date de naissance des dirigeants min et max -->
+                <label for="date_naissance_personne_min">Date de naissance du dirigeant minimale :</label>
+                <input type="date" id="date_naissance_personne_min" name="date_naissance_personne_min">
+                
+                <label for="date_naissance_personne_max">Date de naissance du dirigeant maximale :</label>
+                <input type="date" id="date_naissance_personne_max" name="date_naissance_personne_max">
+
+                <!-- CA min and max inputs -->
+                <label for="ca_min">Chiffre d'affaires minimum :</label>
+                <input type="number" id="ca_min" name="ca_min" placeholder="CA minimum en euros">
+                
+                <label for="ca_max">Chiffre d'affaires maximum :</label>
+                <input type="number" id="ca_max" name="ca_max" placeholder="CA maximum en euros">
+
+                <!-- Résultat Net min and max inputs -->
+                <label for="resultat_net_min">Résultat net minimum :</label>
+                <input type="number" id="resultat_net_min" name="resultat_net_min" placeholder="Résultat net minimum en euros">
+                
+                <label for="resultat_net_max">Résultat net maximum :</label>
+                <input type="number" id="resultat_net_max" name="resultat_net_max" placeholder="Résultat net maximum en euros">
+
+                <!-- Select État Administratif -->
+                <label for="etat_administratif">État administratif :</label>
+                <select id="etat_administratif" name="etat_administratif">
+                    <option value="">Sélectionnez un état</option>
+                    <option value="A">Actif</option>
+                    <option value="F">Fermé</option>
+                </select>
+
+                <div class="filter-group">
+                    <input type="email" id="email" name="email" placeholder="Votre adresse email" required>
+                </div>
+
+                <button type="submit">Envoyer</button>
+            </form>
+        </div>
+
+        <div class="results">
+            <div class="results-header">
+                <div class="results-actions">
+                    <button id="download-csv" class="action-button">Télécharger les 50 premiers résultats en format CSV</button>
+                    <button id="contact-more" class="action-button">Me contacter pour plus de résultats</button>
+                    <div id="total-results" class="total-results"></div>
+                </div>
+            </div>
+            <div class="table-container">
+                <table id="results-table">
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>SIREN</th>
+                            <th>Code NAF</th>
+                            <th>Activité principale</th>
+                            <th>Adresse</th>
+                        </tr>
+                    </thead>
+                    <tbody id="results-body">
+                        <!-- Results will be inserted here -->
+                    </tbody>
+                </table>
+            </div>
+            <!-- The button will be inserted here -->
+        </div>
+    </div>
+
+    <!-- Include Choices.js via CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+
+    <script>
+        const nafOptions = [
+            { value: "01.11Z", label: "01.11Z - Culture de céréales (à l'exception du riz), de légumineuses et de graines oléagineuses" },
+            { value: "01.12Z", label: "01.12Z - Culture du riz" },
+            { value: "01.13Z", label: "01.13Z - Culture de légumes, de melons, de racines et de tubercules" },
+            { value: "01.14Z", label: "01.14Z - Culture de la canne à sucre" },
+            { value: "01.15Z", label: "01.15Z - Culture du tabac" },
+            { value: "01.16Z", label: "01.16Z - Culture de plantes à fibres" },
+            { value: "01.19Z", label: "01.19Z - Autres cultures non permanentes" },
+            { value: "01.21Z", label: "01.21Z - Culture de la vigne" },
+            { value: "01.22Z", label: "01.22Z - Culture de fruits tropicaux et subtropicaux" },
+            { value: "01.23Z", label: "01.23Z - Culture d'agrumes" },
+            // Add more NAF codes here...
+        ];
+
+        const departementOptions = [
+            { value: "01", label: "01 - Ain" },
+            { value: "02", label: "02 - Aisne" },
+            { value: "03", label: "03 - Allier" },
+            { value: "04", label: "04 - Alpes-de-Haute-Provence" },
+            { value: "05", label: "05 - Hautes-Alpes" },
+            { value: "06", label: "06 - Alpes-Maritimes" },
+            { value: "07", label: "07 - Ardèche" },
+            { value: "08", label: "08 - Ardennes" },
+            { value: "09", label: "09 - Ariège" },
+            { value: "10", label: "10 - Aube" },
+            { value: "11", label: "11 - Aude" },
+            { value: "12", label: "12 - Aveyron" },
+            { value: "13", label: "13 - Bouches-du-Rhône" },
+            { value: "14", label: "14 - Calvados" },
+            { value: "15", label: "15 - Cantal" },
+            { value: "16", label: "16 - Charente" },
+            { value: "17", label: "17 - Charente-Maritime" },
+            { value: "18", label: "18 - Cher" },
+            { value: "19", label: "19 - Corrèze" },
+            { value: "2A", label: "2A - Corse-du-Sud" },
+            { value: "2B", label: "2B - Haute-Corse" },
+            { value: "21", label: "21 - Côte-d'Or" },
+            { value: "22", label: "22 - Côtes-d'Armor" },
+            { value: "23", label: "23 - Creuse" },
+            { value: "24", label: "24 - Dordogne" },
+            { value: "25", label: "25 - Doubs" },
+            { value: "26", label: "26 - Drôme" },
+            { value: "27", label: "27 - Eure" },
+            { value: "28", label: "28 - Eure-et-Loir" },
+            { value: "29", label: "29 - Finistère" },
+            { value: "30", label: "30 - Gard" },
+            { value: "31", label: "31 - Haute-Garonne" },
+            { value: "32", label: "32 - Gers" },
+            { value: "33", label: "33 - Gironde" },
+            { value: "34", label: "34 - Hérault" },
+            { value: "35", label: "35 - Ille-et-Vilaine" },
+            { value: "36", label: "36 - Indre" },
+            { value: "37", label: "37 - Indre-et-Loire" },
+            { value: "38", label: "38 - Isère" },
+            { value: "39", label: "39 - Jura" },
+            { value: "40", label: "40 - Landes" },
+            { value: "41", label: "41 - Loir-et-Cher" },
+            { value: "42", label: "42 - Loire" },
+            { value: "43", label: "43 - Haute-Loire" },
+            { value: "44", label: "44 - Loire-Atlantique" },
+            { value: "45", label: "45 - Loiret" },
+            { value: "46", label: "46 - Lot" },
+            { value: "47", label: "47 - Lot-et-Garonne" },
+            { value: "48", label: "48 - Lozère" },
+            { value: "49", label: "49 - Maine-et-Loire" },
+            { value: "50", label: "50 - Manche" },
+            { value: "51", label: "51 - Marne" },
+            { value: "52", label: "52 - Haute-Marne" },
+            { value: "53", label: "53 - Mayenne" },
+            { value: "54", label: "54 - Meurthe-et-Moselle" },
+            { value: "55", label: "55 - Meuse" },
+            { value: "56", label: "56 - Morbihan" },
+            { value: "57", label: "57 - Moselle" },
+            { value: "58", label: "58 - Nièvre" },
+            { value: "59", label: "59 - Nord" },
+            { value: "60", label: "60 - Oise" },
+            { value: "61", label: "61 - Orne" },
+            { value: "62", label: "62 - Pas-de-Calais" },
+            { value: "63", label: "63 - Puy-de-Dôme" },
+            { value: "64", label: "64 - Pyrénées-Atlantiques" },
+            { value: "65", label: "65 - Hautes-Pyrénées" },
+            { value: "66", label: "66 - Pyrénées-Orientales" },
+            { value: "67", label: "67 - Bas-Rhin" },
+            { value: "68", label: "68 - Haut-Rhin" },
+            { value: "69", label: "69 - Rhône" },
+            { value: "70", label: "70 - Haute-Saône" },
+            { value: "71", label: "71 - Saône-et-Loire" },
+            { value: "72", label: "72 - Sarthe" },
+            { value: "73", label: "73 - Savoie" },
+            { value: "74", label: "74 - Haute-Savoie" },
+            { value: "75", label: "75 - Paris" },
+            { value: "76", label: "76 - Seine-Maritime" },
+            { value: "77", label: "77 - Seine-et-Marne" },
+            { value: "78", label: "78 - Yvelines" },
+            { value: "79", label: "79 - Deux-Sèvres" },
+            { value: "80", label: "80 - Somme" },
+            { value: "81", label: "81 - Tarn" },
+            { value: "82", label: "82 - Tarn-et-Garonne" },
+            { value: "83", label: "83 - Var" },
+            { value: "84", label: "84 - Vaucluse" },
+            { value: "85", label: "85 - Vendée" },
+            { value: "86", label: "86 - Vienne" },
+            { value: "87", label: "87 - Haute-Vienne" },
+            { value: "88", label: "88 - Vosges" },
+            { value: "89", label: "89 - Yonne" },
+            { value: "90", label: "90 - Territoire de Belfort" },
+            { value: "91", label: "91 - Essonne" },
+            { value: "92", label: "92 - Hauts-de-Seine" },
+            { value: "93", label: "93 - Seine-Saint-Denis" },
+            { value: "94", label: "94 - Val-de-Marne" },
+            { value: "95", label: "95 - Val-d'Oise" },
+            { value: "971", label: "971 - Guadeloupe" },
+            { value: "972", label: "972 - Martinique" },
+            { value: "973", label: "973 - Guyane" },
+            { value: "974", label: "974 - La Réunion" },
+            { value: "976", label: "976 - Mayotte" }
+        ];
+
+        let totalResults = [];
+        const maxPages = 6;
+        const resultsPerPage = 10;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeNafDropdown();
+            // Initialize Choices.js for multiselects
+            const nafChoices = new Choices('#code_naf', { removeItemButton: true, searchPlaceholderValue: 'Rechercher un code NAF...' });
+            const departementChoices = new Choices('#departement', {
+                choices: departementOptions,
+                removeItemButton: true,
+                searchPlaceholderValue: 'Rechercher un département...'
+            });
+            const trancheEffectifChoices = new Choices('#tranche_effectif_salarie', { removeItemButton: true, searchPlaceholderValue: 'Rechercher une tranche d\'effectif...' });
+            const sectionActiviteChoices = new Choices('#section_activite_principale', { removeItemButton: true, searchPlaceholderValue: 'Rechercher une activité...' });
+
+            // Tranches d'effectif salarié data
+            const trancheEffectifData = [
+                { value: '00', label: '0 salarié' },
+                { value: '01', label: '1 ou 2 salariés' },
+                { value: '02', label: '3  5 salariés' },
+                { value: '03', label: '6 à 9 salariés' },
+                { value: '11', label: '10 à 19 salariés' },
+                { value: '12', label: '20 à 49 salariés' },
+                { value: '21', label: '50 à 99 salariés' },
+                { value: '22', label: '100 à 199 salariés' },
+                { value: '31', label: '200 à 499 salariés' },
+                { value: '41', label: '500 à 999 salariés' },
+                { value: '42', label: '1000 à 1999 salariés' },
+                { value: '51', label: '2000 à 4999 salariés' },
+                { value: '52', label: '5000 salariés ou plus' },
+                { value: 'NN', label: 'Effectif inconnu' }
+            ];
+            trancheEffectifChoices.setChoices(trancheEffectifData, 'value', 'label', false);
+
+            // Sections d'activité principale
+            const sectionActiviteData = [
+                { value: 'A', label: 'A - Agriculture, sylviculture et pêche' },
+                { value: 'B', label: 'B - Industries extractives' },
+                { value: 'C', label: 'C - Industrie manufacturière' },
+                { value: 'D', label: 'D - Production et distribution d\'électricité, de gaz, de vapeur et d\'air conditionné' },
+                { value: 'E', label: 'E - Production et distribution d\'eau ; assainissement, gestion des déchets et dépollution' },
+                { value: 'F', label: 'F - Construction' },
+                { value: 'G', label: 'G - Commerce ; réparation d\'automobiles et de motocycles' },
+                { value: 'H', label: 'H - Transports et entreposage' },
+                { value: 'I', label: 'I - Hébergement et restauration' },
+                { value: 'J', label: 'J - Information et communication' },
+                { value: 'K', label: 'K - Activités financières et d\'assurance' },
+                { value: 'L', label: 'L - Activités immobilières' },
+                { value: 'M', label: 'M - Activités spécialisées, scientifiques et techniques' },
+                { value: 'N', label: 'N - Activités de services administratifs et de soutien' },
+                { value: 'O', label: 'O - Administration publique' },
+                { value: 'P', label: 'P - Enseignement' },
+                { value: 'Q', label: 'Q - Santé humaine et action sociale' },
+                { value: 'R', label: 'R - Arts, spectacles et activités récréatives' },
+                { value: 'S', label: 'S - Autres activités de services' },
+                { value: 'T', label: 'T - Activités des ménages en tant qu\'employeurs ; activités indiffrenciées des ménages en tant que producteurs de biens et services pour usage propre' },
+                { value: 'U', label: 'U - Activités extra-territoriales' }
+            ];
+            sectionActiviteChoices.setChoices(sectionActiviteData, 'value', 'label', false);
+
+            document.getElementById('search-form').addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                const email = document.getElementById('email').value.trim();
+                if (!email) {
+                    alert('Veuillez entrer une adresse email valide.');
+                    return;
+                }
+
+                // Get filter values
+                const q = document.getElementById('q').value;
+                const siren = document.getElementById('siren').value;
+                const activite_principale = Array.from(document.querySelectorAll('#code_naf option:checked')).map(option => option.value).join(',');
+                const departement = Array.from(document.querySelectorAll('#departement option:checked')).map(option => option.value).join(',');
+                const tranche_effectif_salarie = Array.from(document.querySelectorAll('#tranche_effectif_salarie option:checked')).map(option => option.value).join(',');
+                const section_activite_principale = Array.from(document.querySelectorAll('#section_activite_principale option:checked')).map(option => option.value).join(',');
+                const date_naissance_personne_min = document.getElementById('date_naissance_personne_min').value;
+                const date_naissance_personne_max = document.getElementById('date_naissance_personne_max').value;
+                const etat_administratif = document.getElementById('etat_administratif').value;
+                const ca_min = document.getElementById('ca_min').value;
+                const ca_max = document.getElementById('ca_max').value;
+                const resultat_net_min = document.getElementById('resultat_net_min').value;
+                const resultat_net_max = document.getElementById('resultat_net_max').value;
+
+                // Construct the base URL for the entreprise API
+                let baseUrl = 'https://recherche-entreprises.api.gouv.fr/search?';
+                if (q) baseUrl += `q=${encodeURIComponent(q)}&`;
+                if (siren) baseUrl += `siren=${siren}&`;
+                if (activite_principale) baseUrl += `activite_principale=${activite_principale}&`;
+                if (departement) baseUrl += `departement=${departement}&`;
+                if (tranche_effectif_salarie) baseUrl += `tranche_effectif_salarie=${tranche_effectif_salarie}&`;
+                if (section_activite_principale) baseUrl += `section_activite_principale=${section_activite_principale}&`;
+                if (date_naissance_personne_min) baseUrl += `date_naissance_personne_min=${date_naissance_personne_min}&`;
+                if (date_naissance_personne_max) baseUrl += `date_naissance_personne_max=${date_naissance_personne_max}&`;
+                if (etat_administratif) baseUrl += `etat_administratif=${etat_administratif}&`;
+                if (ca_min) baseUrl += `ca_min=${ca_min}&`;
+                if (ca_max) baseUrl += `ca_max=${ca_max}&`;
+                if (resultat_net_min) baseUrl += `resultat_net_min=${resultat_net_min}&`;
+                if (resultat_net_max) baseUrl += `resultat_net_max=${resultat_net_max}&`;
+
+                // Remove the last '&' if needed
+                baseUrl = baseUrl.slice(0, -1);
+
+                console.log('Search URL:', baseUrl);  // Log the URL for debugging
+
+                // Construct the webhook URL with query parameters
+                let webhookUrl = 'http://localhost:5678/webhook-test/057519d3-78d2-4e37-9324-71255edd366c?';
+                webhookUrl += `email=${encodeURIComponent(email)}&`;
+                webhookUrl += `searchUrl=${encodeURIComponent(baseUrl)}&`;
+                webhookUrl += `q=${encodeURIComponent(q || '')}&`;
+                webhookUrl += `siren=${encodeURIComponent(siren || '')}&`;
+                webhookUrl += `activite_principale=${encodeURIComponent(activite_principale || '')}&`;
+                webhookUrl += `departement=${encodeURIComponent(departement || '')}&`;
+                webhookUrl += `tranche_effectif_salarie=${encodeURIComponent(tranche_effectif_salarie || '')}&`;
+                webhookUrl += `section_activite_principale=${encodeURIComponent(section_activite_principale || '')}&`;
+                webhookUrl += `date_naissance_personne_min=${encodeURIComponent(date_naissance_personne_min || '')}&`;
+                webhookUrl += `date_naissance_personne_max=${encodeURIComponent(date_naissance_personne_max || '')}&`;
+                webhookUrl += `etat_administratif=${encodeURIComponent(etat_administratif || '')}&`;
+                webhookUrl += `ca_min=${encodeURIComponent(ca_min || '')}&`;
+                webhookUrl += `ca_max=${encodeURIComponent(ca_max || '')}&`;
+                webhookUrl += `resultat_net_min=${encodeURIComponent(resultat_net_min || '')}&`;
+                webhookUrl += `resultat_net_max=${encodeURIComponent(resultat_net_max || '')}`;
+
+                // Send GET request to webhook
+                fetch(webhookUrl, {
+                    method: 'GET',
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Webhook response:', data);
+                    alert('Votre recherche a été enregistrée avec succès.');
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    alert('Une erreur est survenue lors de l\'enregistrement de votre recherche.');
+                });
+
+                // Reset totalResults and fetch pages
+                totalResults = [];
+                fetchPages(baseUrl);
+            });
+
+            let totalResultsCount = 0;
+
+            function fetchPages(baseUrl) {
+                const fetchPromises = [];
+
+                for (let i = 1; i <= maxPages; i++) {
+                    const pageUrl = `${baseUrl}&page=${i}`;
+                    fetchPromises.push(
+                        fetch(pageUrl)
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data && data.results) {
+                                    totalResults = totalResults.concat(data.results);
+                                    if (i === 1) {
+                                        totalResultsCount = data.total_results || 0;
+                                        displayTotalResults(totalResultsCount);
+                                    }
+                                }
+                            })
+                            .catch(error => console.error('Error fetching page', i, ':', error))
+                    );
+                }
+
+                Promise.all(fetchPromises).then(() => {
+                    displayResults(totalResults);
+                });
+            }
+
+            function displayTotalResults(count) {
+                const totalResultsElement = document.getElementById('total-results');
+                totalResultsElement.textContent = `${count} entreprises trouvées`;
+            }
+
+            function displayResults(results) {
+                const tableBody = document.getElementById('results-body');
+                tableBody.innerHTML = '';  // Clear previous results
+
+                if (results.length === 0) {
+                    const row = document.createElement('tr');
+                    row.innerHTML = '<td colspan="5">Aucun résultat trouvé</td>';
+                    tableBody.appendChild(row);
+                    return;
+                }
+
+                results.slice(0, 60).forEach((entreprise, index) => {
+                    const nom = entreprise.nom_complet || entreprise.nom_raison_sociale || 'Nom indisponible';
+                    const siren = entreprise.siren || 'SIREN indisponible';
+                    const code_naf = entreprise.activite_principale || 'Code NAF indisponible';
+                    const section_activite = entreprise.section_activite_principale || 'Activité principale indisponible';
+                    const adresse = entreprise.siege?.adresse || 'Adresse indisponible';
+
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${nom}</td>
+                        <td>${siren}</td>
+                        <td>${code_naf}</td>
+                        <td>${section_activite}</td>
+                        <td>${adresse}</td>
+                    `;
+
+                    if (index >= 50) {
+                        row.classList.add('blurred');
+                    }
+
+                    tableBody.appendChild(row);
+                });
+
+                // Add the "Contactez moi" button below the table
+                const resultsContainer = document.querySelector('.results');
+                const buttonContainer = document.createElement('div');
+                buttonContainer.className = 'button-container';
+                
+                const contactButton = document.createElement('button');
+                contactButton.className = 'contact-button';
+                contactButton.textContent = 'Contactez moi pour plus de résultats';
+                contactButton.addEventListener('click', function() {
+                    alert('Fonctionnalité de contact à implémenter');
+                });
+
+                buttonContainer.appendChild(contactButton);
+                resultsContainer.appendChild(buttonContainer);
+            }
+
+            function initializeNafDropdown() {
+                new Choices('#code_naf', {
+                    choices: nafOptions,
+                    removeItemButton: true,
+                    placeholderValue: 'Code NAF',
+                    searchPlaceholderValue: 'Rechercher un code NAF'
+                });
+            }
+
+            const downloadCsvButton = document.getElementById('download-csv');
+            const contactMoreButton = document.getElementById('contact-more');
+
+            downloadCsvButton.addEventListener('click', function() {
+                downloadCSV(totalResults.slice(0, 50));
+            });
+
+            contactMoreButton.addEventListener('click', function() {
+                window.location.href = 'https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ3iiHSOY893VluwPEd4rzSuZMjArS-2irOKMpNvDGTwRgkT_yvOzajyomEOq86_I_vrt88OCFJE';
+            });
+        });
+
+        function downloadCSV(results) {
+            const csvContent = [
+                ['Nom', 'SIREN', 'Code NAF', 'Activité principale', 'Adresse'],
+                ...results.map(entreprise => [
+                    entreprise.nom_complet || entreprise.nom_raison_sociale || '',
+                    entreprise.siren || '',
+                    entreprise.activite_principale || '',
+                    entreprise.section_activite_principale || '',
+                    entreprise.siege?.adresse || ''
+                ])
+            ].map(e => e.join(',')).join('\n');
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            if (link.download !== undefined) {
+                const url = URL.createObjectURL(blob);
+                link.setAttribute("href", url);
+                link.setAttribute("download", "resultats_entreprises.csv");
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        }
+    </script>
+
+</body>
+</html>
