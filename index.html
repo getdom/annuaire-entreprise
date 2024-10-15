@@ -54,20 +54,150 @@
 
         .navbar-button,
         button[type="submit"] {
-            background-color: black;
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 4px;
+            background-color: #0F172A;
+            color: #F8FAFC;
+            font-family: 'Inter', sans-serif;
             font-size: 14px;
-            font-weight: 500;
+            padding: 8px 16px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            white-space: nowrap;
+            border-radius: 6px;
+            border: none;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            text-decoration: none; /* Remove underline from anchor tag */
         }
 
         .navbar-button:hover,
         button[type="submit"]:hover {
-            background-color: #333;
+            background-color: #1E293B;
+        }
+
+        .navbar-button:focus,
+        button[type="submit"]:focus {
+            outline: 2px solid #60A5FA;
+            outline-offset: 2px;
+        }
+
+        /* Ensure the buttons are keyboard focusable */
+        .navbar-button:focus-visible,
+        button[type="submit"]:focus-visible {
+            outline: 2px solid #60A5FA;
+            outline-offset: 2px;
+        }
+
+        /* Center the "Envoyer" button in the filter block */
+        .filters form {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start; /* Align items to the left */
+        }
+
+        .filter-group {
+            width: 100%;
+            margin-bottom: 0.5rem; /* Reduce space between filter groups */
+        }
+
+        .filter-group label {
+            display: block;
+            margin-bottom: 0.25rem;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .filter-group input,
+        .filter-group select,
+        .choices__inner,
+        .email-group input[type="email"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 14px;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            background-color: white;
+        }
+
+        .filter-group input:focus,
+        .filter-group select:focus,
+        .choices__inner:focus,
+        .email-group input[type="email"]:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
+        }
+
+        /* Specific styling for select elements */
+        .filter-group select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23333' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            padding-right: 2.5rem;
+        }
+
+        /* Adjust Choices.js styling */
+        .choices__inner {
+            background-color: white;
+            min-height: auto;
+            padding: 0.5rem 0.75rem;
+        }
+
+        .choices__input {
+            background-color: white;
+        }
+
+        .choices__list--dropdown {
+            background-color: white;
+        }
+
+        .choices__list--dropdown .choices__item {
+            padding: 0.75rem;
+        }
+
+        /* Ensure consistent styling for multi-select */
+        .choices__list--multiple .choices__item {
+            background-color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            margin: 0.25rem;
+        }
+
+        .choices__list--multiple .choices__item.is-highlighted {
+            background-color: var(--hover-color);
+            border: 1px solid var(--hover-color);
+        }
+
+        /* Style for email input and its label */
+        .email-group {
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+
+        .email-group label {
+            display: block;
+            margin-bottom: 0.25rem;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .email-group input[type="email"] {
+            width: 100%;
+            padding: 0.375rem 0.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 12px;
+            transition: border-color 0.3s ease;
+        }
+
+        /* Adjust button alignment */
+        button[type="submit"] {
+            align-self: flex-start;
+            margin-top: 1rem;
         }
 
         .content {
@@ -120,38 +250,6 @@
             border-color: var(--primary-color);
         }
 
-        button[type="submit"] {
-            background-color: #0F172A;
-            color: #F8FAFC;
-            font-family: 'Inter', sans-serif;
-            font-size: 14px;
-            margin: 0 0 0 24px;
-            padding: 8px 16px;
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            white-space: nowrap;
-            border-radius: 6px; /* This is a common value for 'rounded-md' */
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        button[type="submit"]:hover {
-            background-color: #1E293B; /* A slightly lighter shade for hover effect */
-        }
-
-        button[type="submit"]:focus {
-            outline: 2px solid #60A5FA; /* A light blue color for focus ring */
-            outline-offset: 2px;
-        }
-
-        /* Ensure the button is keyboard focusable */
-        button[type="submit"]:focus-visible {
-            outline: 2px solid #60A5FA;
-            outline-offset: 2px;
-        }
-
         .table-container {
             background-color: white;
             border-radius: 8px;
@@ -194,13 +292,13 @@
         table {
             width: 100%;
             border-collapse: collapse;
+            font-size: 12px;
         }
 
         th, td {
             text-align: left;
-            padding: 0.75rem;
+            padding: 8px;
             border-bottom: 1px solid var(--border-color);
-            font-size: 12px;
         }
 
         th {
@@ -208,6 +306,20 @@
             color: var(--text-color);
             white-space: nowrap;
         }
+
+        /* Make the table scrollable horizontally if it's too wide */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        /* Ensure minimum width for each column */
+        th:nth-child(1), td:nth-child(1) { min-width: 150px; } /* Nom */
+        th:nth-child(2), td:nth-child(2) { min-width: 100px; } /* SIREN */
+        th:nth-child(3), td:nth-child(3) { min-width: 80px; }  /* Code NAF */
+        th:nth-child(4), td:nth-child(4) { min-width: 150px; } /* Activité principale */
+        th:nth-child(5), td:nth-child(5) { min-width: 200px; } /* Adresse */
+        th:nth-child(6), td:nth-child(6) { min-width: 120px; } /* Tranche d'effectif */
+        th:nth-child(7), td:nth-child(7) { min-width: 200px; } /* Dirigeants */
 
         tr:last-child td {
             border-bottom: none;
@@ -351,6 +463,26 @@
             font-size: 12px;
             padding: 5px 10px;
         }
+
+        /* Add this to your existing CSS */
+        .filter-group + .filter-group {
+            margin-top: 0.5rem; /* Reduce space between filter groups */
+        }
+
+        /* Specific adjustment for département input if needed */
+        #departement {
+            margin-top: 0.25rem; /* Further reduce space above département input */
+        }
+
+        /* Specific styling for email input */
+        .email-group input[type="email"] {
+            background-color: white;
+        }
+
+        /* Specific styling for activité principale */
+        #section_activite_principale {
+            background-color: white;
+        }
     </style>
 </head>
 <body>
@@ -376,16 +508,28 @@
                 </div>
 
                 <!-- Multiselect Département -->
-                <label for="departement">Département :</label>
-                <select id="departement" name="departement" multiple></select>
+                <div class="filter-group">
+                    <label for="departement">Département</label>
+                    <select id="departement" name="departement" multiple>
+                        <!-- Add options here -->
+                    </select>
+                </div>
 
                 <!-- Multiselect Tranche Effectif Salarié -->
-                <label for="tranche_effectif_salarie">Tranche d'effectif salarié :</label>
-                <select id="tranche_effectif_salarie" name="tranche_effectif_salarie" multiple></select>
+                <div class="filter-group">
+                    <label for="tranche_effectif_salarie">Tranche d'effectif</label>
+                    <select id="tranche_effectif_salarie" name="tranche_effectif_salarie" multiple>
+                        <!-- Add options here -->
+                    </select>
+                </div>
 
                 <!-- Multiselect Section Activité Principale -->
-                <label for="section_activite_principale">Activité principale :</label>
-                <select id="section_activite_principale" name="section_activite_principale" multiple></select>
+                <div class="filter-group">
+                    <label for="section_activite_principale">Activité principale</label>
+                    <select id="section_activite_principale" name="section_activite_principale" multiple>
+                        <!-- Add options here -->
+                    </select>
+                </div>
 
                 <!-- Date de naissance des dirigeants min et max -->
                 <label for="date_naissance_personne_min">Date de naissance du dirigeant minimale :</label>
@@ -416,8 +560,9 @@
                     <option value="F">Fermé</option>
                 </select>
 
-                <div class="filter-group">
-                    <input type="email" id="email" name="email" placeholder="Votre adresse email" required>
+                <div class="email-group">
+                    <label for="email">Entrez votre email pour accéder à la liste</label>
+                    <input type="email" id="email" name="email" required>
                 </div>
 
                 <button type="submit">Envoyer</button>
@@ -441,6 +586,8 @@
                             <th>Code NAF</th>
                             <th>Activité principale</th>
                             <th>Adresse</th>
+                            <th>Tranche d'effectif</th>
+                            <th>Dirigeants</th>
                         </tr>
                     </thead>
                     <tbody id="results-body">
@@ -579,6 +726,14 @@
         const resultsPerPage = 10;
 
         document.addEventListener('DOMContentLoaded', function() {
+            const fakeResults = createFakeTableData();
+            displayResults(fakeResults);
+            
+            // Initialize your form event listener here
+            document.getElementById('search-form').addEventListener('submit', function(event) {
+                // Your existing form submission code
+            });
+
             initializeNafDropdown();
             // Initialize Choices.js for multiselects
             const nafChoices = new Choices('#code_naf', { removeItemButton: true, searchPlaceholderValue: 'Rechercher un code NAF...' });
@@ -756,17 +911,23 @@
 
                 if (results.length === 0) {
                     const row = document.createElement('tr');
-                    row.innerHTML = '<td colspan="5">Aucun résultat trouvé</td>';
+                    row.innerHTML = '<td colspan="7">Aucun résultat trouvé</td>';
                     tableBody.appendChild(row);
                     return;
                 }
 
-                results.slice(0, 60).forEach((entreprise, index) => {
+                results.forEach((entreprise, index) => {
                     const nom = entreprise.nom_complet || entreprise.nom_raison_sociale || 'Nom indisponible';
                     const siren = entreprise.siren || 'SIREN indisponible';
                     const code_naf = entreprise.activite_principale || 'Code NAF indisponible';
                     const section_activite = entreprise.section_activite_principale || 'Activité principale indisponible';
                     const adresse = entreprise.siege?.adresse || 'Adresse indisponible';
+                    const tranche_effectif = entreprise.siege?.tranche_effectif_salarie || entreprise.tranche_effectif_salarie || 'Effectif indisponible';
+                    
+                    let dirigeants = 'Aucun dirigeant renseigné';
+                    if (entreprise.dirigeants && entreprise.dirigeants.length > 0) {
+                        dirigeants = entreprise.dirigeants.map(d => `${d.prenoms || ''} ${d.nom || ''}`).join(', ');
+                    }
 
                     const row = document.createElement('tr');
                     row.innerHTML = `
@@ -775,6 +936,8 @@
                         <td>${code_naf}</td>
                         <td>${section_activite}</td>
                         <td>${adresse}</td>
+                        <td>${tranche_effectif}</td>
+                        <td>${dirigeants}</td>
                     `;
 
                     if (index >= 50) {
@@ -845,6 +1008,47 @@
                 document.body.removeChild(link);
             }
         }
+
+        // Add this function to your existing JavaScript
+        function createFakeTableData() {
+            const fakeData = [];
+            for (let i = 1; i <= 20; i++) {
+                fakeData.push({
+                    nom_complet: `Entreprise Exemple ${i}`,
+                    siren: `123456${i.toString().padStart(3, '0')}`,
+                    activite_principale: 'ABCDE',
+                    section_activite_principale: 'Commerce de détail',
+                    siege: {
+                        adresse: `${i} Rue de l'Exemple, 75000 Paris`,
+                        tranche_effectif_salarie: '10 à 19 salariés'
+                    },
+                    dirigeants: [
+                        { prenoms: 'Jean', nom: 'Dupont' },
+                        { prenoms: 'Marie', nom: 'Martin' }
+                    ]
+                });
+            }
+            return fakeData;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            new Choices('#departement', {
+                removeItemButton: true,
+                placeholderValue: 'Sélectionnez les départements',
+            });
+
+            new Choices('#tranche_effectif_salarie', {
+                removeItemButton: true,
+                placeholderValue: 'Sélectionnez les tranches d\'effectif',
+            });
+
+            new Choices('#section_activite_principale', {
+                removeItemButton: true,
+                placeholderValue: 'Sélectionnez les activités principales',
+            });
+
+            // Your existing code for other Choices.js initializations
+        });
     </script>
 
 </body>
