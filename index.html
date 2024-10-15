@@ -624,50 +624,6 @@
             background-color: #f2f2f2 !important;
         }
 
-        /* Ensure full width for dropdown items */
-        .choices__list--dropdown .choices__item {
-            padding: 0.75rem !important;
-            white-space: normal !important;
-            word-break: break-word !important;
-            width: 100% !important;
-            box-sizing: border-box !important;
-        }
-
-        /* Remove right padding and arrow */
-        .choices__list--dropdown .choices__item--selectable {
-            padding-right: 0.75rem !important;
-        }
-
-        .choices__list--dropdown .choices__item--selectable::after {
-            content: none !important;
-        }
-
-        /* Ensure dropdown takes full width */
-        .choices__list--dropdown {
-            width: 100% !important;
-        }
-
-        /* Adjust inner padding */
-        .choices__inner {
-            padding-right: 25px !important;
-        }
-
-        /* Force text to take full width */
-        .choices__list--dropdown .choices__item--selectable {
-            display: block !important;
-        }
-
-        /* Ensure text color and background are set correctly */
-        .choices__list--dropdown .choices__item {
-            color: #333 !important;
-            background-color: #fff !important;
-        }
-
-        /* Hover effect */
-        .choices__list--dropdown .choices__item--selectable:hover {
-            background-color: #f2f2f2 !important;
-        }
-
         /* Remove the dropdown indicator from items */
         .choices__list--dropdown .choices__item--selectable::after {
             display: none;
@@ -1159,7 +1115,7 @@
 { value: "28.15Z", label: "28.15Z - Fabrication d'engrenages et d'organes mécaniques de transmission" },
 { value: "28.21Z", label: "28.21Z - Fabrication de fours et brûleurs" },
 { value: "28.22Z", label: "28.22Z - Fabrication de matériel de levage et de manutention" },
-{ value: "28.23Z", label: "28.23Z - Fabrication de machines et d'équipements de bureau (à l'exception des ordinateurs et équipements périphériques)" },
+{ value: "28.23Z", label: "28.23Z - Fabrication d'équipements aérauliques et frigorifiques industriels" },
 { value: "28.24Z", label: "28.24Z - Fabrication d'outillage portatif à moteur incorporé" },
 { value: "28.25Z", label: "28.25Z - Fabrication d'équipements aérauliques et frigorifiques industriels" },
 { value: "28.29A", label: "28.29A - Fabrication d'équipements d'emballage, de conditionnement et de pesage" },
@@ -1172,10 +1128,6 @@
 { value: "29.31Z", label: "29.31Z - Fabrication d'équipements électriques et électroniques automobiles" },
 { value: "29.32Z", label: "29.32Z - Fabrication d'autres équipements automobiles" },
 { value: "30.11Z", label: "30.11Z - Construction de navires et de structures flottantes" },
-{ value: "30.12Z", label: "30.12Z - Construction de bateaux de plaisance" },
-{ value: "30.20Z", label: "30.20Z - Construction de locomotives et d'autre matériel ferroviaire roulant" },
-{ value: "30.30Z", label: "30.30Z - Construction aéronautique et spatiale" },
-{ value: "30.40Z", label: "30.40Z - Construction de véhicules militaires de combat" },
 { value: "30.91Z", label: "30.91Z - Fabrication de motocycles" },
 { value: "30.92Z", label: "30.92Z - Fabrication de bicyclettes et de véhicules pour invalides" },
 { value: "30.99Z", label: "30.99Z - Fabrication d'autres équipements de transport n.c.a." },
@@ -1593,7 +1545,7 @@
 { value: "91.04Z", label: "91.04Z - Gestion des jardins botaniques et zoologiques et des réserves naturelles" },
 { value: "92.00Z", label: "92.00Z - Organisation de jeux de hasard et d'argent" },
 { value: "93.11Z", label: "93.11Z - Gestion d'installations sportives" },
-{ value: "93.12Z", label: "93.12Z - Activités de clubs de sports" },
+{ value: "93.12Z", label: "93.12Z - Activités des clubs de sports" },
 { value: "93.13Z", label: "93.13Z - Activités des centres de culture physique" },
 { value: "93.19Z", label: "93.19Z - Autres activités liées au sport" },
 { value: "93.21Z", label: "93.21Z - Activités des parcs d'attractions et parcs à thèmes" },
@@ -1845,33 +1797,71 @@
                 console.log('Search URL:', baseUrl);  // Log the URL for debugging
 
                 // Construct the webhook URL with query parameters
-                let webhookUrl = 'http://localhost:5678/webhook/057519d3-78d2-4e37-9324-71255edd366c';
-                webhookUrl += `email=${encodeURIComponent(email)}&`;
-                webhookUrl += `searchUrl=${encodeURIComponent(baseUrl)}&`;
-                webhookUrl += `q=${encodeURIComponent(q || '')}&`;
-                webhookUrl += `siren=${encodeURIComponent(siren || '')}&`;
-                webhookUrl += `activite_principale=${encodeURIComponent(activite_principale || '')}&`;
-                webhookUrl += `departement=${encodeURIComponent(departement || '')}&`;
-                webhookUrl += `tranche_effectif_salarie=${encodeURIComponent(tranche_effectif_salarie || '')}&`;
-                webhookUrl += `section_activite_principale=${encodeURIComponent(section_activite_principale || '')}&`;
-                webhookUrl += `date_naissance_personne_min=${encodeURIComponent(date_naissance_personne_min || '')}&`;
-                webhookUrl += `date_naissance_personne_max=${encodeURIComponent(date_naissance_personne_max || '')}&`;
-                webhookUrl += `etat_administratif=${encodeURIComponent(etat_administratif || '')}&`;
-                webhookUrl += `ca_min=${encodeURIComponent(ca_min || '')}&`;
-                webhookUrl += `ca_max=${encodeURIComponent(ca_max || '')}&`;
-                webhookUrl += `resultat_net_min=${encodeURIComponent(resultat_net_min || '')}&`;
-                webhookUrl += `resultat_net_max=${encodeURIComponent(resultat_net_max || '')}`;
+                let webhookUrl = 'https://hook.eu2.make.com/q5amjcrpq9tv5ty58h7f4qexzhf18unt';
 
-                // Send GET request to webhook
+                // Create a more comprehensive payload
+                const payload = {
+                    query: q,
+                    email: email,
+                    resultCount: totalResults.length,
+                    timestamp: new Date().toISOString(),
+                    filters: JSON.stringify({
+                        activite_principale: activite_principale,
+                        departement: departement,
+                        tranche_effectif_salarie: tranche_effectif_salarie,
+                        section_activite_principale: section_activite_principale,
+                        date_naissance_personne_min: date_naissance_personne_min,
+                        date_naissance_personne_max: date_naissance_personne_max,
+                        etat_administratif: etat_administratif,
+                        ca_min: ca_min,
+                        ca_max: ca_max,
+                        resultat_net_min: resultat_net_min,
+                        resultat_net_max: resultat_net_max
+                    }),
+                    results: totalResults.slice(0, 5).map(result => ({  // Send first 5 results
+                        nom: result.nom_complet || result.nom_raison_sociale || '',
+                        siren: result.siren || '',
+                        codeNAF: result.activite_principale || '',
+                        adresse: result.siege?.adresse || '',
+                        trancheEffectif: result.siege?.tranche_effectif_salarie || result.tranche_effectif_salarie || '',
+                        dirigeants: (result.dirigeants && result.dirigeants.length > 0) 
+                            ? result.dirigeants.map(d => `${d.prenoms || ''} ${d.nom || ''}`).join('; ')
+                            : ''
+                    }))
+                };
+
+                console.log('Preparing to send webhook notification with payload:', payload);
+
+                // Convert payload to URL-encoded form data
+                const formBody = Object.keys(payload).map(key => {
+                    let value = payload[key];
+                    if (typeof value === 'object') {
+                        value = JSON.stringify(value);
+                    }
+                    return encodeURIComponent(key) + '=' + encodeURIComponent(value);
+                }).join('&');
+
                 fetch(webhookUrl, {
-                    method: 'GET',
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                    },
+                    body: formBody
                 })
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Webhook response:', data);
+                .then(response => {
+                    console.log('Received response with status:', response.status);
+                    if (!response.ok) {
+                        return response.text().then(text => {
+                            throw new Error(`HTTP error! status: ${response.status}, body: ${text}`);
+                        });
+                    }
+                    return response.text();
                 })
-                .catch((error) => {
-                    console.error('Error:', error);
+                .then(text => {
+                    console.log('Webhook notification sent successfully. Response:', text);
+                })
+                .catch(error => {
+                    console.error('Error sending webhook notification:', error);
                 });
 
                 // Reset totalResults and fetch pages
