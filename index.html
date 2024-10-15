@@ -104,7 +104,7 @@
         .filter-group label {
             display: block;
             margin-bottom: 0.25rem;
-            font-size: 12px;
+            font-size: 14px;
             font-weight: 500;
         }
 
@@ -159,11 +159,18 @@
 
         .choices__list--dropdown .choices__item {
             padding: 0.75rem;
+            white-space: normal; /* Allow text to wrap */
+            word-break: break-word; /* Break long words if necessary */
         }
 
-        /* Remove the little square in the dropdown */
+        /* Remove the dropdown indicator from items */
         .choices__list--dropdown .choices__item--selectable::after {
             display: none;
+        }
+
+        /* Ensure the dropdown takes full width of its container */
+        .choices__list--dropdown {
+            width: 100%;
         }
 
         /* Ensure consistent styling for multi-select */
@@ -213,14 +220,14 @@
         .email-group label {
             display: block;
             margin-bottom: 0.25rem;
-            font-size: 12px;
+            font-size: 16px;
             font-weight: 500;
             color: var(--text-color);
         }
 
         .email-group input[type="email"] {
             width: 100%;
-            padding: 0.375rem 0.5rem;
+            padding: 0.85rem 0.85rem;
             border: 1px solid var(--border-color);
             border-radius: 4px;
             font-size: 12px;
@@ -458,10 +465,6 @@
         }
 
         /* Styles for filter inputs */
-        .filter-group {
-            margin-bottom: 0.75rem;
-        }
-
         .filter-group label {
             display: block;
             margin-bottom: 0.25rem;
@@ -499,7 +502,7 @@
 
         /* Add this to your existing CSS */
         .filter-group + .filter-group {
-            margin-top: 0.5rem; /* Reduce space between filter groups */
+            margin-top: 0rem; /* Reduce space between filter groups */
         }
 
         /* Specific adjustment for département input if needed */
@@ -573,6 +576,52 @@
 
         .choices__list--dropdown .choices__item {
             padding: 0.75rem;
+            white-space: normal; /* Allow text to wrap */
+            word-break: break-word; /* Break long words if necessary */
+        }
+
+        /* Ensure full width for dropdown items */
+        .choices__list--dropdown .choices__item {
+            padding: 0.75rem !important;
+            white-space: normal !important;
+            word-break: break-word !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+        }
+
+        /* Remove right padding and arrow */
+        .choices__list--dropdown .choices__item--selectable {
+            padding-right: 0.75rem !important;
+        }
+
+        .choices__list--dropdown .choices__item--selectable::after {
+            content: none !important;
+        }
+
+        /* Ensure dropdown takes full width */
+        .choices__list--dropdown {
+            width: 100% !important;
+        }
+
+        /* Adjust inner padding */
+        .choices__inner {
+            padding-right: 25px !important;
+        }
+
+        /* Force text to take full width */
+        .choices__list--dropdown .choices__item--selectable {
+            display: block !important;
+        }
+
+        /* Ensure text color and background are set correctly */
+        .choices__list--dropdown .choices__item {
+            color: #333 !important;
+            background-color: #fff !important;
+        }
+
+        /* Hover effect */
+        .choices__list--dropdown .choices__item--selectable:hover {
+            background-color: #f2f2f2 !important;
         }
 
         /* Remove the dropdown indicator from items */
@@ -580,20 +629,9 @@
             display: none;
         }
 
-        /* Style for the dropdown arrow */
-        .choices[data-type*="select-multiple"]::after,
-        .choices[data-type*="select-one"]::after {
-            content: "";
-            position: absolute;
-            right: 11.5px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 0;
-            height: 0;
-            border-left: 5px solid transparent;
-            border-right: 5px solid transparent;
-            border-top: 5px solid #333;
-            pointer-events: none;
+        /* Ensure the dropdown takes full width of its container */
+        .choices__list--dropdown {
+            width: 100%;
         }
 
         /* Adjust padding for the select to accommodate the arrow */
@@ -617,9 +655,8 @@
             box-shadow: none;
         }
 
-        /* Style for all labels in the filter section */
-        .filter-group label,
-        .email-group label {
+        /* Style for all labels in the filter block */
+        .filters label {
             display: block;
             margin-bottom: 0.25rem;
             font-size: 12px;
@@ -627,29 +664,42 @@
             color: var(--text-color);
         }
 
-        /* Ensure Choices.js labels are consistent */
-        .choices__label {
-            font-size: 12px;
-            font-weight: 500;
-            color: var(--text-color);
-        }
-
-        /* Additional styling for Choices.js to ensure consistency */
-        .choices {
+        /* Ensure consistent spacing between filter groups */
+        .filter-group,
+        .email-group {
             margin-bottom: 1rem;
         }
 
-        .choices__inner {
-            background-color: white;
+        /* Style for all inputs and selects in the filter block */
+        .filters input,
+        .filters select,
+        .filters .choices__inner {
+            width: 100%;
+            padding: 0.75rem;
             border: 1px solid var(--border-color);
             border-radius: 4px;
             font-size: 14px;
+            background-color: white;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .filters input:focus,
+        .filters select:focus,
+        .filters .choices__inner:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
+        }
+
+        /* Choices.js specific styling */
+        .choices__inner {
             min-height: auto;
             padding: 0.5rem 0.75rem;
         }
 
-        .choices__list--single {
-            padding: 0;
+        .choices__input {
+            background-color: transparent;
+            margin: 0;
         }
 
         .choices__list--multiple .choices__item {
@@ -667,6 +717,15 @@
             background-color: var(--hover-color);
             border: 1px solid var(--hover-color);
         }
+
+        /* Remove extra styling from Choices.js inputs */
+        .choices__input.choices__input--cloned {
+            border: none;
+            padding: 0;
+            margin: 0;
+            min-width: 0;
+            width: 1px;
+        }
     </style>
 </head>
 <body>
@@ -681,9 +740,11 @@
             <form id="search-form">
                 <label for="q">Recherche textuelle :</label>
                 <input type="text" id="q" name="q" placeholder="Entrez un texte...">
-
+                
+                <div class=""filter-group">
                 <label for="siren">SIREN :</label>
                 <input type="text" id="siren" name="siren" placeholder="Entrez un SIREN...">
+                </div>  
 
                 <!-- Multiselect Code NAF -->
                 <div class="filter-group">
@@ -718,36 +779,44 @@
                 </div>
 
                 <!-- Date de naissance des dirigeants min et max -->
+                <div class="filter-group">
                 <label for="date_naissance_personne_min">Date de naissance du dirigeant minimale :</label>
                 <input type="date" id="date_naissance_personne_min" name="date_naissance_personne_min">
-                
+                </div>
+                <div class="filter-group">
                 <label for="date_naissance_personne_max">Date de naissance du dirigeant maximale :</label>
                 <input type="date" id="date_naissance_personne_max" name="date_naissance_personne_max">
-
+                </div>
                 <!-- CA min and max inputs -->
+                <div class="filter-group">
                 <label for="ca_min">Chiffre d'affaires minimum :</label>
                 <input type="number" id="ca_min" name="ca_min" placeholder="CA minimum en euros">
-                
+                </div>
+                <div class="filter-group">
                 <label for="ca_max">Chiffre d'affaires maximum :</label>
                 <input type="number" id="ca_max" name="ca_max" placeholder="CA maximum en euros">
-
+                </div>
                 <!-- Résultat Net min and max inputs -->
+                <div class="filter-group">
                 <label for="resultat_net_min">Résultat net minimum :</label>
                 <input type="number" id="resultat_net_min" name="resultat_net_min" placeholder="Résultat net minimum en euros">
-                
+                </div>
+                <div class="filter-group">
                 <label for="resultat_net_max">Résultat net maximum :</label>
                 <input type="number" id="resultat_net_max" name="resultat_net_max" placeholder="Résultat net maximum en euros">
-
+                </div>
                 <!-- Select État Administratif -->
+                <div class="filter-group">
                 <label for="etat_administratif">État administratif :</label>
                 <select id="etat_administratif" name="etat_administratif">
                     <option value="">Sélectionnez un état</option>
                     <option value="A">Actif</option>
                     <option value="F">Fermé</option>
                 </select>
+                </div>
 
                 <div class="email-group">
-                    <label for="email">Entrez votre email pour accéder à la liste</label>
+                    <label for="email">Entrez votre email pour accéder à la liste*</label>
                     <input type="email" id="email" name="email" required>
                 </div>
 
@@ -780,7 +849,7 @@
                         <!-- Results will be inserted here -->
                     </tbody>
                 </table>
-            </div>
+                </div>
             <!-- The button will be inserted here -->
         </div>
     </div>
@@ -790,16 +859,726 @@
 
     <script>
         const nafOptions = [
-            { value: "01.11Z", label: "01.11Z - Culture de céréales (à l'exception du riz), de légumineuses et de graines oléagineuses" },
-            { value: "01.12Z", label: "01.12Z - Culture du riz" },
-            { value: "01.13Z", label: "01.13Z - Culture de légumes, de melons, de racines et de tubercules" },
-            { value: "01.14Z", label: "01.14Z - Culture de la canne à sucre" },
-            { value: "01.15Z", label: "01.15Z - Culture du tabac" },
-            { value: "01.16Z", label: "01.16Z - Culture de plantes à fibres" },
-            { value: "01.19Z", label: "01.19Z - Autres cultures non permanentes" },
-            { value: "01.21Z", label: "01.21Z - Culture de la vigne" },
-            { value: "01.22Z", label: "01.22Z - Culture de fruits tropicaux et subtropicaux" },
-            { value: "01.23Z", label: "01.23Z - Culture d'agrumes" },
+        { value: "01.11Z", label: "01.11Z - Culture de céréales (sauf riz), légumineuses et graines oléagineuses" },
+{ value: "01.12Z", label: "01.12Z - Culture du riz" },
+{ value: "01.13Z", label: "01.13Z - Culture de légumes, melons, racines et tubercules" },
+{ value: "01.14Z", label: "01.14Z - Culture de la canne à sucre" },
+{ value: "01.15Z", label: "01.15Z - Culture du tabac" },
+{ value: "01.16Z", label: "01.16Z - Culture de plantes à fibres" },
+{ value: "01.19Z", label: "01.19Z - Autres cultures non permanentes" },
+{ value: "01.21Z", label: "01.21Z - Culture de la vigne" },
+{ value: "01.22Z", label: "01.22Z - Culture de fruits tropicaux et subtropicaux" },
+{ value: "01.23Z", label: "01.23Z - Culture d'agrumes" },
+{ value: "01.24Z", label: "01.24Z - Culture de fruits à pépins et à noyau" },
+{ value: "01.25Z", label: "01.25Z - Culture d'autres fruits d'arbres ou d'arbustes et de fruits à coque" },
+{ value: "01.26Z", label: "01.26Z - Culture de fruits oléagineux" },
+{ value: "01.27Z", label: "01.27Z - Culture de plantes à boissons" },
+{ value: "01.28Z", label: "01.28Z - Culture de plantes à épices, aromatiques, médicinales et pharmaceutiques" },
+{ value: "01.29Z", label: "01.29Z - Autres cultures permanentes" },
+{ value: "01.30Z", label: "01.30Z - Reproduction de plantes" },
+{ value: "01.41Z", label: "01.41Z - Élevage de vaches laitières" },
+{ value: "01.42Z", label: "01.42Z - Élevage d'autres bovins et de buffles" },
+{ value: "01.43Z", label: "01.43Z - Élevage de chevaux et d'autres équidés" },
+{ value: "01.44Z", label: "01.44Z - Élevage de chameaux et d'autres camélidés" },
+{ value: "01.45Z", label: "01.45Z - Élevage d'ovins et de caprins" },
+{ value: "01.46Z", label: "01.46Z - Élevage de porcins" },
+{ value: "01.47Z", label: "01.47Z - Élevage de volailles" },
+{ value: "01.49Z", label: "01.49Z - Élevage d'autres animaux" },
+{ value: "01.50Z", label: "01.50Z - Culture et élevage associés" },
+{ value: "01.61Z", label: "01.61Z - Activités de soutien aux cultures" },
+{ value: "01.62Z", label: "01.62Z - Activités de soutien à la production animale" },
+{ value: "01.63Z", label: "01.63Z - Traitement primaire des récoltes" },
+{ value: "01.64Z", label: "01.64Z - Traitement des semences" },
+{ value: "01.70Z", label: "01.70Z - Chasse, piégeage et services annexes" },
+{ value: "02.10Z", label: "02.10Z - Sylviculture et autres activités forestières" },
+{ value: "02.20Z", label: "02.20Z - Exploitation forestière" },
+{ value: "02.30Z", label: "02.30Z - Récolte de produits forestiers non ligneux à l'état sauvage" },
+{ value: "02.40Z", label: "02.40Z - Services de soutien à l'exploitation forestière" },
+{ value: "03.11Z", label: "03.11Z - Pêche en mer" },
+{ value: "03.12Z", label: "03.12Z - Pêche en eau douce" },
+{ value: "03.21Z", label: "03.21Z - Aquaculture en mer" },
+{ value: "03.22Z", label: "03.22Z - Aquaculture en eau douce" },
+{ value: "05.10Z", label: "05.10Z - Extraction de houille" },
+{ value: "05.20Z", label: "05.20Z - Extraction de lignite" },
+{ value: "06.10Z", label: "06.10Z - Extraction de pétrole brut" },
+{ value: "06.20Z", label: "06.20Z - Extraction de gaz naturel" },
+{ value: "07.10Z", label: "07.10Z - Extraction de minerais de fer" },
+{ value: "07.21Z", label: "07.21Z - Extraction de minerais d'uranium et de thorium" },
+{ value: "07.29Z", label: "07.29Z - Extraction d'autres minerais de métaux non ferreux" },
+{ value: "08.11Z", label: "08.11Z - Extraction de pierres, calcaire industriel, gypse, craie et ardoise" },
+{ value: "08.12Z", label: "08.12Z - Exploitation de gravières et sablières, extraction d'argiles et de kaolin" },
+{ value: "08.91Z", label: "08.91Z - Extraction des minéraux chimiques et d'engrais minéraux" },
+{ value: "08.92Z", label: "08.92Z - Extraction de tourbe" },
+{ value: "08.93Z", label: "08.93Z - Production de sel" },
+{ value: "08.99Z", label: "08.99Z - Autres activités extractives n.c.a." },
+{ value: "09.10Z", label: "09.10Z - Activités de soutien à l'extraction d'hydrocarbures" },
+{ value: "09.90Z", label: "09.90Z - Activités de soutien aux autres industries extractives" },
+{ value: "10.11Z", label: "10.11Z - Transformation et conservation de la viande de boucherie" },
+{ value: "10.12Z", label: "10.12Z - Transformation et conservation de la viande de volaille" },
+{ value: "10.13A", label: "10.13A - Préparation industrielle de produits à base de viande" },
+{ value: "10.13B", label: "10.13B - Charcuterie" },
+{ value: "10.20Z", label: "10.20Z - Transformation et conservation de poisson, de crustacés et de mollusques" },
+{ value: "10.31Z", label: "10.31Z - Transformation et conservation de pommes de terre" },
+{ value: "10.32Z", label: "10.32Z - Préparation de jus de fruits et légumes" },
+{ value: "10.39A", label: "10.39A - Autre transformation et conservation de légumes" },
+{ value: "10.39B", label: "10.39B - Transformation et conservation de fruits" },
+{ value: "10.41B", label: "10.41B - Fabrication d'huiles et graisses raffinées" },
+{ value: "10.42Z", label: "10.42Z - Fabrication de margarine et graisses comestibles similaires" },
+{ value: "10.51A", label: "10.51A - Fabrication de lait liquide et de produits frais" },
+{ value: "10.51B", label: "10.51B - Fabrication de beurre" },
+{ value: "10.51C", label: "10.51C - Fabrication de fromage" },
+{ value: "10.51D", label: "10.51D - Fabrication d'autres produits laitiers" },
+{ value: "10.52Z", label: "10.52Z - Fabrication de glaces et sorbets" },
+{ value: "10.61A", label: "10.61A - Meunerie" },
+{ value: "10.61B", label: "10.61B - Autres activités du travail des grains" },
+{ value: "10.62Z", label: "10.62Z - Fabrication de produits amylacés" },
+{ value: "10.71A", label: "10.71A - Fabrication industrielle de pain et de pâtisserie fraîche" },
+{ value: "10.71B", label: "10.71B - Cuisson de produits de boulangerie" },
+{ value: "10.71C", label: "10.71C - Boulangerie et boulangerie-pâtisserie" },
+{ value: "10.71D", label: "10.71D - Pâtisserie" },
+{ value: "10.72Z", label: "10.72Z - Fabrication de biscuits, biscottes et pâtisseries de conservation" },
+{ value: "10.73Z", label: "10.73Z - Fabrication de pâtes alimentaires" },
+{ value: "10.81Z", label: "10.81Z - Fabrication de sucre" },
+{ value: "10.82Z", label: "10.82Z - Fabrication de cacao, chocolat et de produits de confiserie" },
+{ value: "10.83Z", label: "10.83Z - Transformation du thé et du café" },
+{ value: "10.84Z", label: "10.84Z - Fabrication de condiments et assaisonnements" },
+{ value: "10.85Z", label: "10.85Z - Fabrication de plats préparés" },
+{ value: "10.86Z", label: "10.86Z - Fabrication d'aliments homogénéisés et diététiques" },
+{ value: "10.89Z", label: "10.89Z - Fabrication d'autres produits alimentaires n.c.a." },
+{ value: "10.91Z", label: "10.91Z - Fabrication d'aliments pour animaux de ferme" },
+{ value: "10.92Z", label: "10.92Z - Fabrication d'aliments pour animaux de compagnie" },
+{ value: "11.01Z", label: "11.01Z - Production de boissons alcooliques distillées" },
+{ value: "11.02A", label: "11.02A - Fabrication de vins effervescents" },
+{ value: "11.02B", label: "11.02B - Vinification" },
+{ value: "11.03Z", label: "11.03Z - Fabrication de cidre et de vins de fruits" },
+{ value: "11.04Z", label: "11.04Z - Production d'autres boissons fermentées non distillées" },
+{ value: "11.05Z", label: "11.05Z - Fabrication de bière" },
+{ value: "11.06Z", label: "11.06Z - Fabrication de malt" },
+{ value: "11.07A", label: "11.07A - Industrie des eaux de table" },
+{ value: "11.07B", label: "11.07B - Production de boissons rafraîchissantes" },
+{ value: "12.00Z", label: "12.00Z - Fabrication de produits à base de tabac" },
+{ value: "13.10Z", label: "13.10Z - Préparation de fibres textiles et filature" },
+{ value: "13.20Z", label: "13.20Z - Tissage" },
+{ value: "13.30Z", label: "13.30Z - Ennoblissement textile" },
+{ value: "13.91Z", label: "13.91Z - Fabrication d'étoffes à mailles" },
+{ value: "13.92Z", label: "13.92Z - Fabrication d'articles textiles, sauf habillement" },
+{ value: "13.93Z", label: "13.93Z - Fabrication de tapis et moquettes" },
+{ value: "13.94Z", label: "13.94Z - Fabrication de ficelles, cordes et filets" },
+{ value: "13.95Z", label: "13.95Z - Fabrication de non-tissés, sauf habillement" },
+{ value: "13.96Z", label: "13.96Z - Fabrication d'autres textiles techniques et industriels" },
+{ value: "13.99Z", label: "13.99Z - Fabrication d'autres textiles n.c.a." },
+{ value: "14.11Z", label: "14.11Z - Fabrication de vêtements en cuir" },
+{ value: "14.12Z", label: "14.12Z - Fabrication de vêtements de travail" },
+{ value: "14.13Z", label: "14.13Z - Fabrication de vêtements de dessus" },
+{ value: "14.14Z", label: "14.14Z - Fabrication de vêtements de dessous" },
+{ value: "14.19Z", label: "14.19Z - Fabrication d'autres vêtements et accessoires" },
+{ value: "14.20Z", label: "14.20Z - Fabrication d'articles en fourrure" },
+{ value: "14.31Z", label: "14.31Z - Fabrication d'articles chaussants à mailles" },
+{ value: "14.39Z", label: "14.39Z - Fabrication d'autres articles à mailles" },
+{ value: "15.11Z", label: "15.11Z - Apprêt et tannage des cuirs ; préparation et teinture des fourrures" },
+{ value: "15.12Z", label: "15.12Z - Fabrication d'articles de voyage, de maroquinerie et de sellerie" },
+{ value: "15.20Z", label: "15.20Z - Fabrication de chaussures" },
+{ value: "16.10A", label: "16.10A - Sciage et rabotage du bois, hors imprégnation" },
+{ value: "16.10B", label: "16.10B - Imprégnation du bois" },
+{ value: "16.21Z", label: "16.21Z - Fabrication de placage et de panneaux de bois" },
+{ value: "16.22Z", label: "16.22Z - Fabrication de parquets assemblés" },
+{ value: "16.23Z", label: "16.23Z - Fabrication de charpentes et d'autres menuiseries" },
+{ value: "16.24Z", label: "16.24Z - Fabrication d'emballages en bois" },
+{ value: "16.29Z", label: "16.29Z - Fabrication d'objets divers en bois ; fabrication d'objets en liège, vannerie et sparterie" },
+{ value: "17.11Z", label: "17.11Z - Fabrication de pâte à papier" },
+{ value: "17.12Z", label: "17.12Z - Fabrication de papier et de carton" },
+{ value: "17.21A", label: "17.21A - Fabrication de carton ondulé" },
+{ value: "17.21B", label: "17.21B - Fabrication de cartonnages" },
+{ value: "17.21C", label: "17.21C - Fabrication d'emballages en papier" },
+{ value: "17.22Z", label: "17.22Z - Fabrication d'articles en papier à usage sanitaire ou domestique" },
+{ value: "17.23Z", label: "17.23Z - Fabrication d'articles de papeterie" },
+{ value: "17.24Z", label: "17.24Z - Fabrication de papiers peints" },
+{ value: "17.29Z", label: "17.29Z - Fabrication d'autres articles en papier ou en carton" },
+{ value: "18.11Z", label: "18.11Z - Imprimerie de journaux" },
+{ value: "18.12Z", label: "18.12Z - Autre imprimerie (labeur)" },
+{ value: "18.13Z", label: "18.13Z - Activités de pré-presse" },
+{ value: "18.14Z", label: "18.14Z - Reliure et activités connexes" },
+{ value: "18.20Z", label: "18.20Z - Reproduction d'enregistrements" },
+{ value: "19.10Z", label: "19.10Z - Cokéfaction" },
+{ value: "19.20Z", label: "19.20Z - Raffinage du pétrole" },
+{ value: "20.11Z", label: "20.11Z - Fabrication de gaz industriels" },
+{ value: "20.12Z", label: "20.12Z - Fabrication de colorants et de pigments" },
+{ value: "20.13A", label: "20.13A - Enrichissement et retraitement de matières nucléaires" },
+{ value: "20.13B", label: "20.13B - Fabrication d'autres produits chimiques inorganiques de base n.c.a." },
+{ value: "20.14Z", label: "20.14Z - Fabrication d'autres produits chimiques organiques de base" },
+{ value: "20.15Z", label: "20.15Z - Fabrication de produits azotés et d'engrais" },
+{ value: "20.16Z", label: "20.16Z - Fabrication de matières plastiques de base" },
+{ value: "20.17Z", label: "20.17Z - Fabrication de caoutchouc synthétique" },
+{ value: "20.20Z", label: "20.20Z - Fabrication de pesticides et d'autres produits agrochimiques" },
+{ value: "20.30Z", label: "20.30Z - Fabrication de peintures, vernis, encres et mastics" },
+{ value: "20.41Z", label: "20.41Z - Fabrication de savons, détergents et produits d'entretien" },
+{ value: "20.42Z", label: "20.42Z - Fabrication de parfums et de produits pour la toilette" },
+{ value: "20.51Z", label: "20.51Z - Fabrication de produits explosifs" },
+{ value: "20.52Z", label: "20.52Z - Fabrication de colles" },
+{ value: "20.53Z", label: "20.53Z - Fabrication d'huiles essentielles" },
+{ value: "20.59Z", label: "20.59Z - Fabrication d'autres produits chimiques n.c.a." },
+{ value: "20.60Z", label: "20.60Z - Fabrication de fibres artificielles ou synthétiques" },
+{ value: "21.10Z", label: "21.10Z - Fabrication de produits pharmaceutiques de base" },
+{ value: "21.20Z", label: "21.20Z - Fabrication de préparations pharmaceutiques" },
+{ value: "22.11Z", label: "22.11Z - Fabrication et rechapage de pneumatiques" },
+{ value: "22.19Z", label: "22.19Z - Fabrication d'autres articles en caoutchouc" },
+{ value: "22.21Z", label: "22.21Z - Fabrication de plaques, feuilles, tubes et profilés en matières plastiques" },
+{ value: "22.22Z", label: "22.22Z - Fabrication d'emballages en matières plastiques" },
+{ value: "22.23Z", label: "22.23Z - Fabrication d'éléments en matières plastiques pour la construction" },
+{ value: "22.29A", label: "22.29A - Fabrication de pièces techniques à base de matières plastiques" },
+{ value: "22.29B", label: "22.29B - Fabrication de produits de consommation courante en matières plastiques" },
+{ value: "23.11Z", label: "23.11Z - Fabrication de verre plat" },
+{ value: "23.12Z", label: "23.12Z - Façonnage et transformation du verre plat" },
+{ value: "23.13Z", label: "23.13Z - Fabrication de verre creux" },
+{ value: "23.14Z", label: "23.14Z - Fabrication de fibres de verre" },
+{ value: "23.19Z", label: "23.19Z - Fabrication et façonnage d'autres articles en verre, y compris verre technique" },
+{ value: "23.20Z", label: "23.20Z - Fabrication de produits réfractaires" },
+{ value: "23.31Z", label: "23.31Z - Fabrication de carreaux en céramique" },
+{ value: "23.32Z", label: "23.32Z - Fabrication de briques, tuiles et produits de construction en terre cuite" },
+{ value: "23.41Z", label: "23.41Z - Fabrication d'articles céramiques à usage domestique ou ornemental" },
+{ value: "23.43Z", label: "23.43Z - Fabrication d'isolateurs et pièces isolantes en céramique" },
+{ value: "23.44Z", label: "23.44Z - Fabrication d'autres produits céramiques à usage technique" },
+{ value: "23.49Z", label: "23.49Z - Fabrication d'autres produits céramiques" },
+{ value: "23.51Z", label: "23.51Z - Fabrication de ciment" },
+{ value: "23.52Z", label: "23.52Z - Fabrication de chaux et plâtre" },
+{ value: "23.61Z", label: "23.61Z - Fabrication d'éléments en béton pour la construction" },
+{ value: "23.62Z", label: "23.62Z - Fabrication d'éléments en plâtre pour la construction" },
+{ value: "23.63Z", label: "23.63Z - Fabrication de béton prêt à l'emploi" },
+{ value: "23.64Z", label: "23.64Z - Fabrication de mortiers et bétons secs" },
+{ value: "23.65Z", label: "23.65Z - Fabrication d'ouvrages en fibre-ciment" },
+{ value: "23.69Z", label: "23.69Z - Fabrication d'autres ouvrages en béton, en ciment ou en plâtre" },
+{ value: "23.70Z", label: "23.70Z - Taille, façonnage et finissage de pierres" },
+{ value: "23.91Z", label: "23.91Z - Fabrication de produits abrasifs" },
+{ value: "23.99Z", label: "23.99Z - Fabrication d'autres produits minéraux non métalliques n.c.a." },
+{ value: "24.10Z", label: "24.10Z - Sidérurgie" },
+{ value: "24.20Z", label: "24.20Z - Fabrication de tubes, tuyaux, profilés creux et accessoires correspondants en acier" },
+{ value: "24.31Z", label: "24.31Z - Étirage à froid de barres" },
+{ value: "24.32Z", label: "24.32Z - Laminage à froid de feuillards" },
+{ value: "24.33Z", label: "24.33Z - Profilage à froid par formage ou pliage" },
+{ value: "24.34Z", label: "24.34Z - Tréfilage à froid" },
+{ value: "24.41Z", label: "24.41Z - Production de métaux précieux" },
+{ value: "24.42Z", label: "24.42Z - Métallurgie de l'aluminium" },
+{ value: "24.43Z", label: "24.43Z - Métallurgie du plomb, du zinc ou de l'étain" },
+{ value: "24.44Z", label: "24.44Z - Métallurgie du cuivre" },
+{ value: "24.45Z", label: "24.45Z - Métallurgie des autres métaux non ferreux" },
+{ value: "24.46Z", label: "24.46Z - Élaboration et transformation de matières nucléaires" },
+{ value: "24.51Z", label: "24.51Z - Fonderie de fonte" },
+{ value: "24.52Z", label: "24.52Z - Fonderie d'acier" },
+{ value: "24.53Z", label: "24.53Z - Fonderie de métaux légers" },
+{ value: "24.54Z", label: "24.54Z - Fonderie d'autres métaux non ferreux" },
+{ value: "25.11Z", label: "25.11Z - Fabrication de structures métalliques et de parties de structures" },
+{ value: "25.12Z", label: "25.12Z - Fabrication de portes et fenêtres en métal" },
+{ value: "25.21Z", label: "25.21Z - Fabrication de radiateurs et de chaudières pour le chauffage central" },
+{ value: "25.29Z", label: "25.29Z - Fabrication d'autres réservoirs, citernes et conteneurs métalliques" },
+{ value: "25.30Z", label: "25.30Z - Fabrication de générateurs de vapeur, à l'exception des chaudières pour le chauffage central" },
+{ value: "25.40Z", label: "25.40Z - Fabrication d'armes et de munitions" },
+{ value: "25.50A", label: "25.50A - Forge, estampage, matriçage; métallurgie des poudres" },
+{ value: "25.50B", label: "25.50B - Découpage, emboutissage" },
+{ value: "25.61Z", label: "25.61Z - Traitement et revêtement des métaux" },
+{ value: "25.62A", label: "25.62A - Décolletage" },
+{ value: "25.62B", label: "25.62B - Mécanique industrielle" },
+{ value: "25.71Z", label: "25.71Z - Fabrication de coutellerie" },
+{ value: "25.72Z", label: "25.72Z - Fabrication de serrures et de ferrures" },
+{ value: "25.73A", label: "25.73A - Fabrication de moules et modèles" },
+{ value: "25.73B", label: "25.73B - Fabrication d'autres outillages" },
+{ value: "25.91Z", label: "25.91Z - Fabrication de fûts et emballages métalliques similaires" },
+{ value: "25.92Z", label: "25.92Z - Fabrication d'emballages métalliques légers" },
+{ value: "25.93Z", label: "25.93Z - Fabrication d'articles en fils métalliques, de chaînes et de ressorts" },
+{ value: "25.94Z", label: "25.94Z - Fabrication de vis et de boulons" },
+{ value: "25.99A", label: "25.99A - Fabrication d'articles métalliques ménagers" },
+{ value: "25.99B", label: "25.99B - Fabrication d'autres articles métalliques" },
+{ value: "26.11Z", label: "26.11Z - Fabrication de composants électroniques" },
+{ value: "26.12Z", label: "26.12Z - Fabrication de cartes électroniques assemblées" },
+{ value: "26.20Z", label: "26.20Z - Fabrication d'ordinateurs et d'équipements périphériques" },
+{ value: "26.30Z", label: "26.30Z - Fabrication d'équipements de communication" },
+{ value: "26.40Z", label: "26.40Z - Fabrication de produits électroniques grand public" },
+{ value: "26.51A", label: "26.51A - Fabrication d'équipements d'aide à la navigation" },
+{ value: "26.51B", label: "26.51B - Fabrication d'instrumentation scientifique et technique" },
+{ value: "26.52Z", label: "26.52Z - Horlogerie" },
+{ value: "26.60Z", label: "26.60Z - Fabrication d'équipements d'irradiation médicale, d'équipements électromédicaux et électrothérapeutiques" },
+{ value: "26.70Z", label: "26.70Z - Fabrication de matériels optique et photographique" },
+{ value: "26.80Z", label: "26.80Z - Fabrication de supports magnétiques et optiques" },
+{ value: "27.11Z", label: "27.11Z - Fabrication de moteurs, génératrices et transformateurs électriques" },
+{ value: "27.12Z", label: "27.12Z - Fabrication de matériel de distribution et de commande électrique" },
+{ value: "27.20Z", label: "27.20Z - Fabrication de piles et d'accumulateurs électriques" },
+{ value: "27.31Z", label: "27.31Z - Fabrication de câbles de fibres optiques" },
+{ value: "27.32Z", label: "27.32Z - Fabrication d'autres fils et câbles électroniques ou électriques" },
+{ value: "27.33Z", label: "27.33Z - Fabrication de matériel d'installation électrique" },
+{ value: "27.40Z", label: "27.40Z - Fabrication d'appareils d'éclairage électrique" },
+{ value: "27.51Z", label: "27.51Z - Fabrication d'appareils électroménagers" },
+{ value: "27.52Z", label: "27.52Z - Fabrication d'appareils ménagers non électriques" },
+{ value: "27.90Z", label: "27.90Z - Fabrication d'autres matériels électriques" },
+{ value: "28.11Z", label: "28.11Z - Fabrication de moteurs et turbines, à l'exception des moteurs d'avions et de véhicules" },
+{ value: "28.12Z", label: "28.12Z - Fabrication d'équipements hydrauliques et pneumatiques" },
+{ value: "28.13Z", label: "28.13Z - Fabrication d'autres pompes et compresseurs" },
+{ value: "28.14Z", label: "28.14Z - Fabrication d'autres articles de robinetterie" },
+{ value: "28.15Z", label: "28.15Z - Fabrication d'engrenages et d'organes mécaniques de transmission" },
+{ value: "28.21Z", label: "28.21Z - Fabrication de fours et brûleurs" },
+{ value: "28.22Z", label: "28.22Z - Fabrication de matériel de levage et de manutention" },
+{ value: "28.23Z", label: "28.23Z - Fabrication de machines et d'équipements de bureau (à l'exception des ordinateurs et équipements périphériques)" },
+{ value: "28.24Z", label: "28.24Z - Fabrication d'outillage portatif à moteur incorporé" },
+{ value: "28.25Z", label: "28.25Z - Fabrication d'équipements aérauliques et frigorifiques industriels" },
+{ value: "28.29A", label: "28.29A - Fabrication d'équipements d'emballage, de conditionnement et de pesage" },
+{ value: "28.29B", label: "28.29B - Fabrication d'autres machines d'usage général" },
+{ value: "28.30Z", label: "28.30Z - Fabrication de machines agricoles et forestières" },
+{ value: "28.41Z", label: "28.41Z - Fabrication de machines-outils pour le travail des métaux" },
+{ value: "28.49Z", label: "28.49Z - Fabrication d'autres machines-outils" },
+{ value: "29.10Z", label: "29.10Z - Construction de véhicules automobiles" },
+{ value: "29.20Z", label: "29.20Z - Fabrication de carrosseries et remorques" },
+{ value: "29.31Z", label: "29.31Z - Fabrication d'équipements électriques et électroniques automobiles" },
+{ value: "29.32Z", label: "29.32Z - Fabrication d'autres équipements automobiles" },
+{ value: "30.11Z", label: "30.11Z - Construction de navires et de structures flottantes" },
+{ value: "30.12Z", label: "30.12Z - Construction de bateaux de plaisance" },
+{ value: "30.20Z", label: "30.20Z - Construction de locomotives et d'autre matériel ferroviaire roulant" },
+{ value: "30.30Z", label: "30.30Z - Construction aéronautique et spatiale" },
+{ value: "30.40Z", label: "30.40Z - Construction de véhicules militaires de combat" },
+{ value: "30.91Z", label: "30.91Z - Fabrication de motocycles" },
+{ value: "30.92Z", label: "30.92Z - Fabrication de bicyclettes et de véhicules pour invalides" },
+{ value: "30.99Z", label: "30.99Z - Fabrication d'autres équipements de transport n.c.a." },
+{ value: "31.01Z", label: "31.01Z - Fabrication de meubles de bureau et de magasin" },
+{ value: "31.02Z", label: "31.02Z - Fabrication de meubles de cuisine" },
+{ value: "31.03Z", label: "31.03Z - Fabrication de matelas" },
+{ value: "31.09A", label: "31.09A - Fabrication de sièges d'ameublement d'intérieur" },
+{ value: "31.09B", label: "31.09B - Fabrication d'autres meubles et industries connexes de l'ameublement" },
+{ value: "32.11Z", label: "32.11Z - Frappe de monnaie" },
+{ value: "32.12Z", label: "32.12Z - Fabrication d'articles de joaillerie et bijouterie" },
+{ value: "32.13Z", label: "32.13Z - Fabrication d'articles de bijouterie fantaisie et articles similaires" },
+{ value: "32.20Z", label: "32.20Z - Fabrication d'instruments de musique" },
+{ value: "32.30Z", label: "32.30Z - Fabrication d'articles de sport" },
+{ value: "32.40Z", label: "32.40Z - Fabrication de jeux et jouets" },
+{ value: "32.50A", label: "32.50A - Fabrication de matériel médico-chirurgical et dentaire" },
+{ value: "32.50B", label: "32.50B - Fabrication de lunettes" },
+{ value: "32.91Z", label: "32.91Z - Fabrication d'articles de brosserie" },
+{ value: "32.99Z", label: "32.99Z - Autres activités manufacturières n.c.a." },
+{ value: "33.11Z", label: "33.11Z - Réparation d'ouvrages en métaux" },
+{ value: "33.12Z", label: "33.12Z - Réparation de machines et équipements mécaniques" },
+{ value: "33.13Z", label: "33.13Z - Réparation de matériels électroniques et optiques" },
+{ value: "33.14Z", label: "33.14Z - Réparation d'équipements électriques" },
+{ value: "33.15Z", label: "33.15Z - Réparation et maintenance navale" },
+{ value: "33.16Z", label: "33.16Z - Réparation et maintenance d'aéronefs et d'engins spatiaux" },
+{ value: "33.17Z", label: "33.17Z - Réparation et maintenance d'autres équipements de transport" },
+{ value: "33.19Z", label: "33.19Z - Réparation d'autres équipements" },
+{ value: "33.20A", label: "33.20A - Installation de structures métalliques, chaudronnées et de tuyauterie" },
+{ value: "33.20B", label: "33.20B - Installation de machines et équipements mécaniques" },
+{ value: "33.20C", label: "33.20C - Conception d'ensemble et assemblage sur site industriel d'équipements de contrôle des processus industriels" },
+{ value: "33.20D", label: "33.20D - Installation d'équipements électriques, de matériels électroniques et optiques ou d'autres matériels" },
+{ value: "35.11Z", label: "35.11Z - Production d'électricité" },
+{ value: "35.12Z", label: "35.12Z - Transport d'électricité" },
+{ value: "35.13Z", label: "35.13Z - Distribution d'électricité" },
+{ value: "35.14Z", label: "35.14Z - Commerce d'électricité" },
+{ value: "35.21Z", label: "35.21Z - Production de combustibles gazeux" },
+{ value: "35.22Z", label: "35.22Z - Distribution de combustibles gazeux par conduites" },
+{ value: "35.23Z", label: "35.23Z - Commerce de combustibles gazeux par conduites" },
+{ value: "35.30Z", label: "35.30Z - Production et distribution de vapeur et d'air conditionné" },
+{ value: "36.00Z", label: "36.00Z - Captage, traitement et distribution d'eau" },
+{ value: "37.00Z", label: "37.00Z - Collecte et traitement des eaux usées" },
+{ value: "38.11Z", label: "38.11Z - Collecte des déchets non dangereux" },
+{ value: "38.12Z", label: "38.12Z - Collecte des déchets dangereux" },
+{ value: "38.21Z", label: "38.21Z - Traitement et élimination des déchets non dangereux" },
+{ value: "38.22Z", label: "38.22Z - Traitement et élimination des déchets dangereux" },
+{ value: "38.31Z", label: "38.31Z - Démantèlement d'épaves" },
+{ value: "38.32Z", label: "38.32Z - Récupération de déchets triés" },
+{ value: "39.00Z", label: "39.00Z - Dépollution et autres services de gestion des déchets" },
+{ value: "41.10A", label: "41.10A - Promotion immobilière de logements" },
+{ value: "41.10B", label: "41.10B - Promotion immobilière de bureaux" },
+{ value: "41.10C", label: "41.10C - Promotion immobilière d'autres bâtiments" },
+{ value: "41.10D", label: "41.10D - Supports juridiques de programmes" },
+{ value: "41.20A", label: "41.20A - Construction de maisons individuelles" },
+{ value: "41.20B", label: "41.20B - Construction d'autres bâtiments" },
+{ value: "42.11Z", label: "42.11Z - Construction de routes et autoroutes" },
+{ value: "42.12Z", label: "42.12Z - Construction de voies ferrées de surface et souterraines" },
+{ value: "42.13A", label: "42.13A - Construction d'ouvrages d'art" },
+{ value: "42.13B", label: "42.13B - Construction et entretien de tunnels" },
+{ value: "42.21Z", label: "42.21Z - Construction de réseaux pour fluides" },
+{ value: "42.22Z", label: "42.22Z - Construction de réseaux électriques et de télécommunications" },
+{ value: "42.91Z", label: "42.91Z - Construction d'ouvrages maritimes et fluviaux" },
+{ value: "42.99Z", label: "42.99Z - Construction d'autres ouvrages de génie civil n.c.a." },
+{ value: "43.11Z", label: "43.11Z - Travaux de démolition" },
+{ value: "43.12A", label: "43.12A - Travaux de terrassement courants et travaux préparatoires" },
+{ value: "43.12B", label: "43.12B - Travaux de terrassement spécialisés ou de grande masse" },
+{ value: "43.13Z", label: "43.13Z - Forages et sondages" },
+{ value: "43.21A", label: "43.21A - Travaux d'installation électrique dans tous locaux" },
+{ value: "43.21B", label: "43.21B - Travaux d'installation électrique sur la voie publique" },
+{ value: "43.22A", label: "43.22A - Travaux d'installation d'eau et de gaz en tous locaux" },
+{ value: "43.22B", label: "43.22B - Travaux d'installation d'équipements thermiques et de climatisation" },
+{ value: "43.29A", label: "43.29A - Travaux d'isolation" },
+{ value: "43.29B", label: "43.29B - Autres travaux d'installation n.c.a." },
+{ value: "43.31Z", label: "43.31Z - Travaux de plâtrerie" },
+{ value: "43.32A", label: "43.32A - Travaux de menuiserie bois et PVC" },
+{ value: "43.32B", label: "43.32B - Travaux de menuiserie métallique et serrurerie" },
+{ value: "43.32C", label: "43.32C - Agencement de lieux de vente" },
+{ value: "43.33Z", label: "43.33Z - Travaux de revêtement des sols et des murs" },
+{ value: "43.34Z", label: "43.34Z - Travaux de peinture et vitrerie" },
+{ value: "43.39Z", label: "43.39Z - Autres travaux de finition" },
+{ value: "43.91A", label: "43.91A - Travaux de charpente" },
+{ value: "43.91B", label: "43.91B - Travaux de couverture par éléments" },
+{ value: "43.99A", label: "43.99A - Travaux d'étanchéification" },
+{ value: "43.99B", label: "43.99B - Travaux de montage de structures métalliques" },
+{ value: "43.99C", label: "43.99C - Travaux de maçonnerie générale et gros œuvre de bâtiment" },
+{ value: "43.99D", label: "43.99D - Autres travaux spécialisés de construction" },
+{ value: "43.99E", label: "43.99E - Location avec opérateur de matériel de construction" },
+{ value: "45.11Z", label: "45.11Z - Commerce de voitures et de véhicules automobiles légers" },
+{ value: "45.19Z", label: "45.19Z - Commerce d'autres véhicules automobiles" },
+{ value: "45.20A", label: "45.20A - Entretien et réparation de véhicules automobiles légers" },
+{ value: "45.20B", label: "45.20B - Entretien et réparation d'autres véhicules automobiles" },
+{ value: "45.31Z", label: "45.31Z - Commerce de gros d'équipements automobiles" },
+{ value: "45.32Z", label: "45.32Z - Commerce de détail d'équipements automobiles" },
+{ value: "45.40Z", label: "45.40Z - Commerce et réparation de motocycles" },
+{ value: "46.11Z", label: "46.11Z - Intermédiaires du commerce en matières premières agricoles, animaux vivants, matières premières textiles" },
+{ value: "46.12A", label: "46.12A - Centrales d'achat de carburant" },
+{ value: "46.12B", label: "46.12B - Autres intermédiaires du commerce en combustibles, métaux, minéraux et produits chimiques" },
+{ value: "46.13Z", label: "46.13Z - Intermédiaires du commerce en bois et matériaux de construction" },
+{ value: "46.14Z", label: "46.14Z - Intermédiaires du commerce en machines, équipements industriels, navires et avions" },
+{ value: "46.15Z", label: "46.15Z - Intermédiaires du commerce en meubles, articles de ménage et quincaillerie" },
+{ value: "46.16Z", label: "46.16Z - Intermédiaires du commerce en textiles, habillement, fourrures, chaussures et articles en cuir" },
+{ value: "46.17A", label: "46.17A - Centrales d'achat alimentaires" },
+{ value: "46.17B", label: "46.17B - Autres intermédiaires du commerce en denrées, boissons et tabac" },
+{ value: "46.18Z", label: "46.18Z - Intermédiaires spécialisés dans le commerce d'autres produits spécifiques" },
+{ value: "46.19A", label: "46.19A - Centrales d'achat non alimentaires" },
+{ value: "46.19B", label: "46.19B - Autres intermédiaires du commerce en produits divers" },
+{ value: "46.21Z", label: "46.21Z - Commerce de gros de céréales, de tabac non manufacturé, de semences et d'aliments pour le bétail" },
+{ value: "46.22Z", label: "46.22Z - Commerce de gros de fleurs et plantes" },
+{ value: "46.23Z", label: "46.23Z - Commerce de gros d'animaux vivants" },
+{ value: "46.24Z", label: "46.24Z - Commerce de gros de cuirs et peaux" },
+{ value: "46.31Z", label: "46.31Z - Commerce de gros de fruits et légumes" },
+{ value: "46.32A", label: "46.32A - Commerce de gros de viandes de boucherie" },
+{ value: "46.32B", label: "46.32B - Commerce de gros de produits à base de viande" },
+{ value: "46.32C", label: "46.32C - Commerce de gros de volailles et gibier" },
+{ value: "46.33Z", label: "46.33Z - Commerce de gros de produits laitiers, œufs, huiles et matières grasses comestibles" },
+{ value: "46.34Z", label: "46.34Z - Commerce de gros de boissons" },
+{ value: "46.35Z", label: "46.35Z - Commerce de gros de produits à base de tabac" },
+{ value: "46.36Z", label: "46.36Z - Commerce de gros de sucre, chocolat et confiserie" },
+{ value: "46.37Z", label: "46.37Z - Commerce de gros de café, thé, cacao et épices" },
+{ value: "46.38A", label: "46.38A - Commerce de gros de poissons, crustacés et mollusques" },
+{ value: "46.38B", label: "46.38B - Commerce de gros alimentaire spécialisé divers" },
+{ value: "46.39A", label: "46.39A - Commerce de gros de produits surgelés" },
+{ value: "46.39B", label: "46.39B - Commerce de gros alimentaire non spécialisé" },
+{ value: "46.41Z", label: "46.41Z - Commerce de gros de textiles" },
+{ value: "46.42Z", label: "46.42Z - Commerce de gros d'habillement et de chaussures" },
+{ value: "46.43Z", label: "46.43Z - Commerce de gros d'appareils électroménagers" },
+{ value: "46.44Z", label: "46.44Z - Commerce de gros de vaisselle, verrerie et produits d'entretien" },
+{ value: "46.45Z", label: "46.45Z - Commerce de gros de parfumerie et de produits de beauté" },
+{ value: "46.46Z", label: "46.46Z - Commerce de gros de produits pharmaceutiques" },
+{ value: "46.47Z", label: "46.47Z - Commerce de gros de meubles, de tapis et d'appareils d'éclairage" },
+{ value: "46.48Z", label: "46.48Z - Commerce de gros d'articles d'horlogerie et de bijouterie" },
+{ value: "46.49Z", label: "46.49Z - Commerce de gros d'autres biens domestiques" },
+{ value: "46.51Z", label: "46.51Z - Commerce de gros d'ordinateurs, d'équipements informatiques périphériques et de logiciels" },
+{ value: "46.52Z", label: "46.52Z - Commerce de gros de composants et d'équipements électroniques et de télécommunication" },
+{ value: "46.61Z", label: "46.61Z - Commerce de gros de matériel agricole" },
+{ value: "46.62Z", label: "46.62Z - Commerce de gros de machines-outils" },
+{ value: "46.63Z", label: "46.63Z - Commerce de gros de machines pour l'extraction, la construction et le génie civil" },
+{ value: "46.64Z", label: "46.64Z - Commerce de gros de machines pour l'industrie textile et l'habillement" },
+{ value: "46.65Z", label: "46.65Z - Commerce de gros de mobilier de bureau" },
+{ value: "46.66Z", label: "46.66Z - Commerce de gros d'autres machines et équipements de bureau" },
+{ value: "46.69A", label: "46.69A - Commerce de gros de matériel électrique" },
+{ value: "46.69B", label: "46.69B - Commerce de gros de fournitures et équipements industriels divers" },
+{ value: "46.69C", label: "46.69C - Commerce de gros de fournitures et équipements divers pour le commerce et les services" },
+{ value: "46.71Z", label: "46.71Z - Commerce de gros de combustibles et de produits annexes" },
+{ value: "46.72Z", label: "46.72Z - Commerce de gros de minerais et métaux" },
+{ value: "46.73A", label: "46.73A - Commerce de gros de bois et de matériaux de construction" },
+{ value: "46.73B", label: "46.73B - Commerce de gros d'appareils sanitaires et de produits de décoration" },
+{ value: "46.74A", label: "46.74A - Commerce de gros de quincaillerie" },
+{ value: "46.74B", label: "46.74B - Commerce de gros de fournitures pour la plomberie et le chauffage" },
+{ value: "46.75Z", label: "46.75Z - Commerce de gros de produits chimiques" },
+{ value: "46.76Z", label: "46.76Z - Commerce de gros d'autres produits intermédiaires" },
+{ value: "46.77Z", label: "46.77Z - Commerce de gros de déchets et débris" },
+{ value: "46.90Z", label: "46.90Z - Commerce de gros non spécialisé" },
+{ value: "47.11A", label: "47.11A - Commerce de détail de produits surgelés" },
+{ value: "47.11B", label: "47.11B - Commerce d'alimentation générale" },
+{ value: "47.11C", label: "47.11C - Supérettes" },
+{ value: "47.11D", label: "47.11D - Supermarchés" },
+{ value: "47.11E", label: "47.11E - Magasins multi-commerces" },
+{ value: "47.11F", label: "47.11F - Hypermarchés" },
+{ value: "47.19A", label: "47.19A - Grands magasins" },
+{ value: "47.19B", label: "47.19B - Autres commerces de détail en magasin non spécialisé" },
+{ value: "47.21Z", label: "47.21Z - Commerce de détail de fruits et légumes en magasin spécialisé" },
+{ value: "47.22Z", label: "47.22Z - Commerce de détail de viandes et de produits à base de viande en magasin spécialisé" },
+{ value: "47.23Z", label: "47.23Z - Commerce de détail de poissons, crustacés et mollusques en magasin spécialisé" },
+{ value: "47.24Z", label: "47.24Z - Commerce de détail de pain, pâtisserie et confiserie en magasin spécialisé" },
+{ value: "47.25Z", label: "47.25Z - Commerce de détail de boissons en magasin spécialisé" },
+{ value: "47.26Z", label: "47.26Z - Commerce de détail de produits à base de tabac en magasin spécialisé" },
+{ value: "47.29Z", label: "47.29Z - Autres commerces de détail alimentaires en magasin spécialisé" },
+{ value: "47.30Z", label: "47.30Z - Commerce de détail de carburants en magasin spécialisé" },
+{ value: "47.41Z", label: "47.41Z - Commerce de détail d'ordinateurs, d'unités périphériques et de logiciels en magasin spécialisé" },
+{ value: "47.42Z", label: "47.42Z - Commerce de détail de matériels de télécommunication en magasin spécialisé" },
+{ value: "47.43Z", label: "47.43Z - Commerce de détail de matériels audio et vidéo en magasin spécialisé" },
+{ value: "47.51Z", label: "47.51Z - Commerce de détail de textiles en magasin spécialisé" },
+{ value: "47.52A", label: "47.52A - Commerce de détail de quincaillerie, peintures et verres en petites surfaces (moins de 400 m²)" },
+{ value: "47.52B", label: "47.52B - Commerce de détail de quincaillerie, peintures et verres en grandes surfaces (400 m² et plus)" },
+{ value: "47.53Z", label: "47.53Z - Commerce de détail de tapis, moquettes et revêtements de murs et de sols en magasin spécialisé" },
+{ value: "47.54Z", label: "47.54Z - Commerce de détail d'appareils électroménagers en magasin spécialisé" },
+{ value: "47.59A", label: "47.59A - Commerce de détail de meubles" },
+{ value: "47.59B", label: "47.59B - Commerce de détail d'autres équipements du foyer" },
+{ value: "47.61Z", label: "47.61Z - Commerce de détail de livres en magasin spécialisé" },
+{ value: "47.62Z", label: "47.62Z - Commerce de détail de journaux et papeterie en magasin spécialisé" },
+{ value: "47.63Z", label: "47.63Z - Commerce de détail d'enregistrements musicaux et vidéo en magasin spécialisé" },
+{ value: "47.64Z", label: "47.64Z - Commerce de détail d'articles de sport en magasin spécialisé" },
+{ value: "47.65Z", label: "47.65Z - Commerce de détail de jeux et jouets en magasin spécialisé" },
+{ value: "47.71Z", label: "47.71Z - Commerce de détail d'habillement en magasin spécialisé" },
+{ value: "47.72A", label: "47.72A - Commerce de détail de la chaussure" },
+{ value: "47.72B", label: "47.72B - Commerce de détail de maroquinerie et d'articles de voyage" },
+{ value: "47.73Z", label: "47.73Z - Commerce de détail de produits pharmaceutiques en magasin spécialisé" },
+{ value: "47.74Z", label: "47.74Z - Commerce de détail d'articles médicaux et orthopédiques en magasin spécialisé" },
+{ value: "47.75Z", label: "47.75Z - Commerce de détail de parfumerie et de produits de beauté en magasin spécialisé" },
+{ value: "47.76Z", label: "47.76Z - Commerce de détail de fleurs, plantes, graines, engrais, animaux de compagnie et aliments pour ces animaux" },
+{ value: "47.77Z", label: "47.77Z - Commerce de détail d'articles d'horlogerie et de bijouterie en magasin spécialisé" },
+{ value: "47.78A", label: "47.78A - Commerces de détail d'optique" },
+{ value: "47.78B", label: "47.78B - Commerces de détail de charbons et combustibles" },
+{ value: "47.78C", label: "47.78C - Autres commerces de détail spécialisés divers" },
+{ value: "47.79Z", label: "47.79Z - Commerce de détail de biens d'occasion en magasin" },
+{ value: "47.81Z", label: "47.81Z - Commerce de détail alimentaire sur éventaires et marchés" },
+{ value: "47.82Z", label: "47.82Z - Commerce de détail de textiles, d'habillement et de chaussures sur éventaires et marchés" },
+{ value: "47.89Z", label: "47.89Z - Autres commerces de détail sur éventaires et marchés" },
+{ value: "47.91A", label: "47.91A - Vente à distance sur catalogue général" },
+{ value: "47.91B", label: "47.91B - Vente à distance sur catalogue spécialisé" },
+{ value: "47.99A", label: "47.99A - Vente à domicile" },
+{ value: "47.99B", label: "47.99B - Vente par automates et autres commerces de détail hors magasin, éventaires ou marchés n.c.a." },
+{ value: "49.10Z", label: "49.10Z - Transport ferroviaire interurbain de voyageurs" },
+{ value: "49.20Z", label: "49.20Z - Transports ferroviaires de fret" },
+{ value: "49.31Z", label: "49.31Z - Transports urbains et suburbains de voyageurs" },
+{ value: "49.32Z", label: "49.32Z - Transports de voyageurs par taxis" },
+{ value: "49.39A", label: "49.39A - Transports routiers réguliers de voyageurs" },
+{ value: "49.39B", label: "49.39B - Autres transports routiers de voyageurs" },
+{ value: "49.39C", label: "49.39C - Téléphériques et remontées mécaniques" },
+{ value: "49.41A", label: "49.41A - Transports routiers de fret interurbains" },
+{ value: "49.41B", label: "49.41B - Transports routiers de fret de proximité" },
+{ value: "49.41C", label: "49.41C - Location de camions avec chauffeur" },
+{ value: "49.42Z", label: "49.42Z - Services de déménagement" },
+{ value: "49.50Z", label: "49.50Z - Transports par conduites" },
+{ value: "50.10Z", label: "50.10Z - Transports maritimes et côtiers de passagers" },
+{ value: "50.20Z", label: "50.20Z - Transports maritimes et côtiers de fret" },
+{ value: "50.30Z", label: "50.30Z - Transports fluviaux de passagers" },
+{ value: "50.40Z", label: "50.40Z - Transports fluviaux de fret" },
+{ value: "51.10Z", label: "51.10Z - Transports aériens de passagers" },
+{ value: "51.21Z", label: "51.21Z - Transports aériens de fret" },
+{ value: "51.22Z", label: "51.22Z - Transports spatiaux" },
+{ value: "52.10A", label: "52.10A - Entreposage et stockage frigorifique" },
+{ value: "52.10B", label: "52.10B - Entreposage et stockage non frigorifique" },
+{ value: "52.21Z", label: "52.21Z - Services auxiliaires des transports terrestres" },
+{ value: "52.22Z", label: "52.22Z - Services auxiliaires des transports par eau" },
+{ value: "52.23Z", label: "52.23Z - Services auxiliaires des transports aériens" },
+{ value: "52.24A", label: "52.24A - Manutention portuaire" },
+{ value: "52.24B", label: "52.24B - Manutention non portuaire" },
+{ value: "52.29A", label: "52.29A - Messagerie, fret express" },
+{ value: "52.29B", label: "52.29B - Affrètement et organisation des transports" },
+{ value: "53.10Z", label: "53.10Z - Activités de poste dans le cadre d'une obligation de service universel" },
+{ value: "53.20Z", label: "53.20Z - Autres activités de poste et de courrier" },
+{ value: "55.10Z", label: "55.10Z - Hôtels et hébergement similaire" },
+{ value: "55.20Z", label: "55.20Z - Hébergement touristique et autre hébergement de courte durée" },
+{ value: "55.30Z", label: "55.30Z - Terrains de camping et parcs pour caravanes ou véhicules de loisirs" },
+{ value: "55.90Z", label: "55.90Z - Autres hébergements" },
+{ value: "56.10A", label: "56.10A - Restauration traditionnelle" },
+{ value: "56.10B", label: "56.10B - Cafétérias et autres libres-services" },
+{ value: "56.10C", label: "56.10C - Restauration de type rapide" },
+{ value: "56.21Z", label: "56.21Z - Services des traiteurs" },
+{ value: "56.29A", label: "56.29A - Restauration collective sous contrat" },
+{ value: "56.29B", label: "56.29B - Autres services de restauration n.c.a." },
+{ value: "56.30Z", label: "56.30Z - Débits de boissons" },
+{ value: "58.11Z", label: "58.11Z - Édition de livres" },
+{ value: "58.12Z", label: "58.12Z - Édition de répertoires et de fichiers d'adresses" },
+{ value: "58.13Z", label: "58.13Z - Édition de journaux" },
+{ value: "58.14Z", label: "58.14Z - Édition de revues et périodiques" },
+{ value: "58.19Z", label: "58.19Z - Autres activités d'édition" },
+{ value: "58.21Z", label: "58.21Z - Édition de jeux électroniques" },
+{ value: "58.29A", label: "58.29A - Édition de logiciels système et de réseau" },
+{ value: "58.29B", label: "58.29B - Édition de logiciels outils de développement et de langages" },
+{ value: "58.29C", label: "58.29C - Édition de logiciels applicatifs" },
+{ value: "59.11A", label: "59.11A - Production de films et de programmes pour la télévision" },
+{ value: "59.11B", label: "59.11B - Production de films institutionnels et publicitaires" },
+{ value: "59.11C", label: "59.11C - Production de films pour le cinéma" },
+{ value: "59.12Z", label: "59.12Z - Post-production de films cinématographiques, de vidéo et de programmes de télévision" },
+{ value: "59.13A", label: "59.13A - Distribution de films cinématographiques" },
+{ value: "59.13B", label: "59.13B - Édition et distribution vidéo" },
+{ value: "59.14Z", label: "59.14Z - Projection de films cinématographiques" },
+{ value: "59.20Z", label: "59.20Z - Enregistrement sonore et édition musicale" },
+{ value: "60.10Z", label: "60.10Z - Édition et diffusion de programmes radio" },
+{ value: "60.20A", label: "60.20A - Édition de chaînes généralistes" },
+{ value: "60.20B", label: "60.20B - Édition de chaînes thématiques" },
+{ value: "61.10Z", label: "61.10Z - Télécommunications filaires" },
+{ value: "61.20Z", label: "61.20Z - Télécommunications sans fil" },
+{ value: "61.30Z", label: "61.30Z - Télécommunications par satellite" },
+{ value: "61.90Z", label: "61.90Z - Autres activités de télécommunication" },
+{ value: "62.01Z", label: "62.01Z - Programmation informatique" },
+{ value: "62.02A", label: "62.02A - Conseil en systèmes et logiciels informatiques" },
+{ value: "62.02B", label: "62.02B - Tierce maintenance de systèmes et d'applications informatiques" },
+{ value: "62.03Z", label: "62.03Z - Gestion d'installations informatiques" },
+{ value: "62.09Z", label: "62.09Z - Autres activités informatiques" },
+{ value: "63.11Z", label: "63.11Z - Traitement de données, hébergement et activités connexes" },
+{ value: "63.12Z", label: "63.12Z - Portails internet" },
+{ value: "63.91Z", label: "63.91Z - Activités des agences de presse" },
+{ value: "63.99Z", label: "63.99Z - Autres services d'information n.c.a." },
+{ value: "64.11Z", label: "64.11Z - Activités de banque centrale" },
+{ value: "64.19Z", label: "64.19Z - Autres intermédiations monétaires" },
+{ value: "64.20Z", label: "64.20Z - Activités des sociétés holding" },
+{ value: "64.30Z", label: "64.30Z - Fonds de placement et entités financières similaires" },
+{ value: "64.91Z", label: "64.91Z - Crédit-bail" },
+{ value: "64.92Z", label: "64.92Z - Autre distribution de crédit" },
+{ value: "64.99Z", label: "64.99Z - Autres activités des services financiers, hors assurance et caisses de retraite" },
+{ value: "65.11Z", label: "65.11Z - Assurance vie" },
+{ value: "65.12Z", label: "65.12Z - Autres assurances" },
+{ value: "65.20Z", label: "65.20Z - Réassurance" },
+{ value: "65.30Z", label: "65.30Z - Caisses de retraite" },
+{ value: "66.11Z", label: "66.11Z - Administration de marchés financiers" },
+{ value: "66.12Z", label: "66.12Z - Courtage de valeurs mobilières et de marchandises" },
+{ value: "66.19A", label: "66.19A - Supports juridiques de gestion de patrimoine mobilier" },
+{ value: "66.19B", label: "66.19B - Autres activités auxiliaires de services financiers, hors assurance et caisses de retraite" },
+{ value: "66.21Z", label: "66.21Z - évaluation des risques et dommages" },
+{ value: "66.22Z", label: "66.22Z - Activités des agents et courtiers d'assurances" },
+{ value: "66.29Z", label: "66.29Z - Autres activités auxiliaires d'assurance et de caisses de retraite" },
+{ value: "66.30Z", label: "66.30Z - Gestion de fonds" },
+{ value: "68.10Z", label: "68.10Z - Activités des marchands de biens immobiliers" },
+{ value: "68.20A", label: "68.20A - Location de logements" },
+{ value: "68.20B", label: "68.20B - Location de terrains et d'autres biens immobiliers" },
+{ value: "68.31Z", label: "68.31Z - Agences immobilières" },
+{ value: "68.32A", label: "68.32A - Administration d'immeubles et autres biens immobiliers" },
+{ value: "68.32B", label: "68.32B - Supports juridiques de gestion de patrimoine immobilier" },
+{ value: "69.10Z", label: "69.10Z - Activités juridiques" },
+{ value: "69.20Z", label: "69.20Z - Activités comptables" },
+{ value: "70.10Z", label: "70.10Z - Activités des sièges sociaux" },
+{ value: "70.21Z", label: "70.21Z - Conseil en relations publiques et communication" },
+{ value: "70.22Z", label: "70.22Z - Conseil pour les affaires et autres conseils de gestion" },
+{ value: "71.11Z", label: "71.11Z - Activités d'architecture" },
+{ value: "71.12A", label: "71.12A - Activité des géomètres" },
+{ value: "71.12B", label: "71.12B - Ingénierie, études techniques" },
+{ value: "71.20A", label: "71.20A - Contrôle technique automobile" },
+{ value: "71.20B", label: "71.20B - Analyses, essais et inspections techniques" },
+{ value: "72.11Z", label: "72.11Z - Recherche-développement en biotechnologie" },
+{ value: "72.19Z", label: "72.19Z - Recherche-développement en autres sciences physiques et naturelles" },
+{ value: "72.20Z", label: "72.20Z - Recherche-développement en sciences humaines et sociales" },
+{ value: "73.11Z", label: "73.11Z - Activités des agences de publicité" },
+{ value: "73.12Z", label: "73.12Z - Régie publicitaire de médias" },
+{ value: "73.20Z", label: "73.20Z - Études de marché et sondages" },
+{ value: "74.10Z", label: "74.10Z - Activités spécialisées de design" },
+{ value: "74.20Z", label: "74.20Z - Activités photographiques" },
+{ value: "74.30Z", label: "74.30Z - Traduction et interprétation" },
+{ value: "74.90A", label: "74.90A - Activité des économistes de la construction" },
+{ value: "74.90B", label: "74.90B - Activités spécialisées, scientifiques et techniques diverses" },
+{ value: "75.00Z", label: "75.00Z - Activités vétérinaires" },
+{ value: "77.11A", label: "77.11A - Location de courte durée de voitures et de véhicules automobiles légers" },
+{ value: "77.11B", label: "77.11B - Location de longue durée de voitures et de véhicules automobiles légers" },
+{ value: "77.12Z", label: "77.12Z - Location et location-bail de camions" },
+{ value: "77.21Z", label: "77.21Z - Location et location-bail d'articles de loisirs et de sport" },
+{ value: "77.22Z", label: "77.22Z - Location de vidéocassettes et disques vidéo" },
+{ value: "77.29Z", label: "77.29Z - Location et location-bail d'autres biens personnels et domestiques" },
+{ value: "77.31Z", label: "77.31Z - Location et location-bail de machines et équipements agricoles" },
+{ value: "77.32Z", label: "77.32Z - Location et location-bail de machines et équipements pour la construction" },
+{ value: "77.33Z", label: "77.33Z - Location et location-bail de machines de bureau et de matériel informatique" },
+{ value: "77.34Z", label: "77.34Z - Location et location-bail de matériels de transport par eau" },
+{ value: "77.35Z", label: "77.35Z - Location et location-bail de matériels de transport aérien" },
+{ value: "77.39Z", label: "77.39Z - Location et location-bail d'autres machines, équipements et biens matériels n.c.a." },
+{ value: "77.40Z", label: "77.40Z - Location-bail de propriété intellectuelle et de produits similaires, à l'exception des œuvres soumises à copyright" },
+{ value: "78.10Z", label: "78.10Z - Activités des agences de placement de main-d'œuvre" },
+{ value: "78.20Z", label: "78.20Z - Activités des agences de travail temporaire" },
+{ value: "78.30Z", label: "78.30Z - Autre mise à disposition de ressources humaines" },
+{ value: "79.11Z", label: "79.11Z - Activités des agences de voyage" },
+{ value: "79.12Z", label: "79.12Z - Activités des voyagistes" },
+{ value: "79.90Z", label: "79.90Z - Autres services de réservation et activités connexes" },
+{ value: "80.10Z", label: "80.10Z - Activités de sécurité privée" },
+{ value: "80.20Z", label: "80.20Z - Activités liées aux systèmes de sécurité" },
+{ value: "80.30Z", label: "80.30Z - Activités d'enquête" },
+{ value: "81.10Z", label: "81.10Z - Activités combinées de soutien lié aux bâtiments" },
+{ value: "81.21Z", label: "81.21Z - Nettoyage courant des bâtiments" },
+{ value: "81.22Z", label: "81.22Z - Autres activités de nettoyage des bâtiments et nettoyage industriel" },
+{ value: "81.29A", label: "81.29A - Désinfection, désinsectisation, dératisation" },
+{ value: "81.29B", label: "81.29B - Autres activités de nettoyage n.c.a." },
+{ value: "81.30Z", label: "81.30Z - Services d'aménagement paysager" },
+{ value: "82.11Z", label: "82.11Z - Services administratifs combinés de bureau" },
+{ value: "82.19Z", label: "82.19Z - Photocopie, préparation de documents et autres activités spécialisées de soutien de bureau" },
+{ value: "82.20Z", label: "82.20Z - Activités de centres d'appels" },
+{ value: "82.30Z", label: "82.30Z - Organisation de foires, salons professionnels et congrès" },
+{ value: "82.91Z", label: "82.91Z - Activités des agences de recouvrement de factures et des sociétés d'information financière sur la clientèle" },
+{ value: "82.92Z", label: "82.92Z - Activités de conditionnement" },
+{ value: "82.99Z", label: "82.99Z - Autres activités de soutien aux entreprises n.c.a." },
+{ value: "84.11Z", label: "84.11Z - Administration publique générale" },
+{ value: "84.12Z", label: "84.12Z - Administration publique (tutelle) de la santé, de la formation, de la culture et des services sociaux" },
+{ value: "84.13Z", label: "84.13Z - Administration publique (tutelle) des activités économiques" },
+{ value: "84.21Z", label: "84.21Z - Affaires étrangères" },
+{ value: "84.22Z", label: "84.22Z - Défense" },
+{ value: "84.23Z", label: "84.23Z - Justice" },
+{ value: "84.24Z", label: "84.24Z - Activités d'ordre public et de sécurité" },
+{ value: "84.25Z", label: "84.25Z - Services du feu et de secours" },
+{ value: "84.30A", label: "84.30A - Activités générales de sécurité sociale" },
+{ value: "85.10Z", label: "85.10Z - Enseignement pré-primaire" },
+{ value: "85.20Z", label: "85.20Z - Enseignement primaire" },
+{ value: "85.31Z", label: "85.31Z - Enseignement secondaire général" },
+{ value: "85.32Z", label: "85.32Z - Enseignement secondaire technique ou professionnel" },
+{ value: "85.41Z", label: "85.41Z - Enseignement post-secondaire non supérieur" },
+{ value: "85.42Z", label: "85.42Z - Enseignement supérieur" },
+{ value: "85.51Z", label: "85.51Z - Enseignement de disciplines sportives et d'activités de loisirs" },
+{ value: "85.52Z", label: "85.52Z - Enseignement culturel" },
+{ value: "85.53Z", label: "85.53Z - Enseignement de la conduite" },
+{ value: "85.59A", label: "85.59A - Formation continue d'adultes" },
+{ value: "85.59B", label: "85.59B - Autres enseignements" },
+{ value: "85.60Z", label: "85.60Z - Activités de soutien à l'enseignement" },
+{ value: "86.10Z", label: "86.10Z - Activités hospitalières" },
+{ value: "86.21Z", label: "86.21Z - Activité des médecins généralistes" },
+{ value: "86.22A", label: "86.22A - Activités de radiodiagnostic et de radiothérapie" },
+{ value: "86.22B", label: "86.22B - Activités chirurgicales" },
+{ value: "86.22C", label: "86.22C - Autres activités des médecins spécialistes" },
+{ value: "86.23Z", label: "86.23Z - Pratique dentaire" },
+{ value: "86.90A", label: "86.90A - Ambulances" },
+{ value: "86.90B", label: "86.90B - Laboratoires d'analyses médicales" },
+{ value: "86.90C", label: "86.90C - Centres de collecte et banques d'organes" },
+{ value: "86.90D", label: "86.90D - Activités des infirmiers et des sages-femmes" },
+{ value: "86.90E", label: "86.90E - Activités des professionnels de la rééducation, de l'appareillage et des pédicures-podologues" },
+{ value: "86.90F", label: "86.90F - Activités de santé humaine non classées ailleurs" },
+{ value: "87.10A", label: "87.10A - Hébergement médicalisé pour personnes âgées" },
+{ value: "87.10B", label: "87.10B - Hébergement médicalisé pour enfants handicapés" },
+{ value: "87.10C", label: "87.10C - Hébergement médicalisé pour adultes handicapés et autre hébergement médicalisé" },
+{ value: "87.20A", label: "87.20A - Hébergement social pour handicapés mentaux et malades mentaux" },
+{ value: "87.20B", label: "87.20B - Hébergement social pour toxicomanes" },
+{ value: "87.30A", label: "87.30A - Hébergement social pour personnes âgées" },
+{ value: "87.30B", label: "87.30B - Hébergement social pour handicapés physiques" },
+{ value: "87.90A", label: "87.90A - Hébergement social pour enfants en difficultés" },
+{ value: "87.90B", label: "87.90B - Hébergement social pour adultes et familles en difficultés et autre hébergement social" },
+{ value: "88.10A", label: "88.10A - Aide à domicile" },
+{ value: "88.10B", label: "88.10B - Accueil ou accompagnement sans hébergement d'adultes handicapés ou de personnes âgées" },
+{ value: "88.10C", label: "88.10C - Aide par le travail" },
+{ value: "88.91A", label: "88.91A - Accueil de jeunes enfants" },
+{ value: "88.91B", label: "88.91B - Accueil ou accompagnement sans hébergement d'enfants handicapés" },
+{ value: "88.99A", label: "88.99A - Autre accueil ou accompagnement sans hébergement d'enfants et d'adolescents" },
+{ value: "88.99B", label: "88.99B - Action sociale sans hébergement n.c.a." },
+{ value: "90.01Z", label: "90.01Z - Arts du spectacle vivant" },
+{ value: "90.02Z", label: "90.02Z - Activités de soutien au spectacle vivant" },
+{ value: "90.03A", label: "90.03A - Création artistique relevant des arts plastiques" },
+{ value: "90.03B", label: "90.03B - Autre création artistique" },
+{ value: "90.04Z", label: "90.04Z - Gestion de salles de spectacles" },
+{ value: "91.01Z", label: "91.01Z - Gestion des bibliothèques et des archives" },
+{ value: "91.02Z", label: "91.02Z - Gestion des musées" },
+{ value: "91.03Z", label: "91.03Z - Gestion des sites et monuments historiques et des attractions touristiques similaires" },
+{ value: "91.04Z", label: "91.04Z - Gestion des jardins botaniques et zoologiques et des réserves naturelles" },
+{ value: "92.00Z", label: "92.00Z - Organisation de jeux de hasard et d'argent" },
+{ value: "93.11Z", label: "93.11Z - Gestion d'installations sportives" },
+{ value: "93.12Z", label: "93.12Z - Activités de clubs de sports" },
+{ value: "93.13Z", label: "93.13Z - Activités des centres de culture physique" },
+{ value: "93.19Z", label: "93.19Z - Autres activités liées au sport" },
+{ value: "93.21Z", label: "93.21Z - Activités des parcs d'attractions et parcs à thèmes" },
+{ value: "93.29Z", label: "93.29Z - Autres activités récréatives et de loisirs" },
+{ value: "94.11Z", label: "94.11Z - Activités des organisations patronales et consulaires" },
+{ value: "94.12Z", label: "94.12Z - Activités des organisations professionnelles" },
+{ value: "94.20Z", label: "94.20Z - Activités des syndicats de salariés" },
+{ value: "94.91Z", label: "94.91Z - Activités des organisations religieuses" },
+{ value: "94.92Z", label: "94.92Z - Activités des organisations politiques" },
+{ value: "94.99Z", label: "94.99Z - Autres organisations fonctionnant par adhésion volontaire" },
+{ value: "95.11Z", label: "95.11Z - Réparation d'ordinateurs et d'équipements périphériques" },
+{ value: "95.12Z", label: "95.12Z - Réparation d'équipements de communication" },
+{ value: "95.21Z", label: "95.21Z - Réparation de produits électroniques grand public" },
+{ value: "95.22Z", label: "95.22Z - Réparation d'appareils électroménagers et d'équipements pour la maison et le jardin" },
+{ value: "95.23Z", label: "95.23Z - Réparation de chaussures et d'articles en cuir" },
+{ value: "95.24Z", label: "95.24Z - Réparation de meubles et d'équipements du foyer" },
+{ value: "95.25Z", label: "95.25Z - Réparation d'articles d'horlogerie et de bijouterie" },
+{ value: "95.29Z", label: "95.29Z - Réparation d'autres biens personnels et domestiques" },
+{ value: "96.01A", label: "96.01A - Blanchisserie-teinturerie de gros" },
+{ value: "96.01B", label: "96.01B - Blanchisserie-teinturerie de détail" },
+{ value: "96.02A", label: "96.02A - Coiffure" },
+{ value: "96.02B", label: "96.02B - Soins de beauté" },
+{ value: "96.03Z", label: "96.03Z - Services funéraires" },
+{ value: "96.04Z", label: "96.04Z - Entretien corporel" },
+{ value: "96.09Z", label: "96.09Z - Autres services personnels n.c.a." },
+{ value: "97.00Z", label: "97.00Z - Activités des ménages en tant qu'employeurs de personnel domestique" },
+{ value: "98.10Z", label: "98.10Z - Activités indifférenciées des ménages en tant que producteurs de biens pour usage propre" },
+{ value: "98.20Z", label: "98.20Z - Activités indifférenciées des ménages en tant que producteurs de services pour usage propre" },
+{ value: "99.00Z", label: "99.00Z - Activités des organisations et organismes extraterritoriaux" },
             // Add more NAF codes here...
         ];
 
@@ -925,7 +1704,7 @@
             const nafChoices = new Choices('#code_naf', { removeItemButton: true, searchPlaceholderValue: 'Rechercher un code NAF...' });
             const departementChoices = new Choices('#departement', {
                 choices: departementOptions,
-                removeItemButton: true,
+                    removeItemButton: true,
                 searchPlaceholderValue: 'Rechercher un département...'
             });
             const trancheEffectifChoices = new Choices('#tranche_effectif_salarie', { removeItemButton: true, searchPlaceholderValue: 'Rechercher une tranche d\'effectif...' });
@@ -1046,11 +1825,9 @@
                 .then(response => response.json())
                 .then(data => {
                     console.log('Webhook response:', data);
-                    alert('Votre recherche a été enregistrée avec succès.');
                 })
                 .catch((error) => {
                     console.error('Error:', error);
-                    alert('Une erreur est survenue lors de l\'enregistrement de votre recherche.');
                 });
 
                 // Reset totalResults and fetch pages
@@ -1089,49 +1866,49 @@
             function displayTotalResults(count) {
                 const totalResultsElement = document.getElementById('total-results');
                 totalResultsElement.textContent = `${count} entreprises trouvées`;
+        }
+
+        function displayResults(results) {
+            const tableBody = document.getElementById('results-body');
+            tableBody.innerHTML = '';  // Clear previous results
+
+            if (results.length === 0) {
+                const row = document.createElement('tr');
+                row.innerHTML = '<td colspan="7">Aucun résultat trouvé</td>';
+                tableBody.appendChild(row);
+                return;
             }
 
-            function displayResults(results) {
-                const tableBody = document.getElementById('results-body');
-                tableBody.innerHTML = '';  // Clear previous results
-
-                if (results.length === 0) {
-                    const row = document.createElement('tr');
-                    row.innerHTML = '<td colspan="7">Aucun résultat trouvé</td>';
-                    tableBody.appendChild(row);
-                    return;
+            results.forEach((entreprise, index) => {
+                const nom = entreprise.nom_complet || entreprise.nom_raison_sociale || 'Nom indisponible';
+                const siren = entreprise.siren || 'SIREN indisponible';
+                const code_naf = entreprise.activite_principale || 'Code NAF indisponible';
+                const section_activite = entreprise.section_activite_principale || 'Activité principale indisponible';
+                const adresse = entreprise.siege?.adresse || 'Adresse indisponible';
+                const tranche_effectif = entreprise.siege?.tranche_effectif_salarie || entreprise.tranche_effectif_salarie || 'Effectif indisponible';
+                
+                let dirigeants = 'Aucun dirigeant renseigné';
+                if (entreprise.dirigeants && entreprise.dirigeants.length > 0) {
+                    dirigeants = entreprise.dirigeants.map(d => `${d.prenoms || ''} ${d.nom || ''}`).join(', ');
                 }
 
-                results.forEach((entreprise, index) => {
-                    const nom = entreprise.nom_complet || entreprise.nom_raison_sociale || 'Nom indisponible';
-                    const siren = entreprise.siren || 'SIREN indisponible';
-                    const code_naf = entreprise.activite_principale || 'Code NAF indisponible';
-                    const section_activite = entreprise.section_activite_principale || 'Activité principale indisponible';
-                    const adresse = entreprise.siege?.adresse || 'Adresse indisponible';
-                    const tranche_effectif = entreprise.siege?.tranche_effectif_salarie || entreprise.tranche_effectif_salarie || 'Effectif indisponible';
-                    
-                    let dirigeants = 'Aucun dirigeant renseigné';
-                    if (entreprise.dirigeants && entreprise.dirigeants.length > 0) {
-                        dirigeants = entreprise.dirigeants.map(d => `${d.prenoms || ''} ${d.nom || ''}`).join(', ');
-                    }
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${nom}</td>
+                    <td>${siren}</td>
+                    <td>${code_naf}</td>
+                    <td>${section_activite}</td>
+                    <td>${adresse}</td>
+                    <td>${tranche_effectif}</td>
+                    <td>${dirigeants}</td>
+                `;
 
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${nom}</td>
-                        <td>${siren}</td>
-                        <td>${code_naf}</td>
-                        <td>${section_activite}</td>
-                        <td>${adresse}</td>
-                        <td>${tranche_effectif}</td>
-                        <td>${dirigeants}</td>
-                    `;
+                if (index >= 50) {
+                    row.classList.add('blurred');
+                }
 
-                    if (index >= 50) {
-                        row.classList.add('blurred');
-                    }
-
-                    tableBody.appendChild(row);
-                });
+                tableBody.appendChild(row);
+            });
 
                 // Add the "Contactez moi" button below the table
                 const resultsContainer = document.querySelector('.results');
