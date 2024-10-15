@@ -624,6 +624,50 @@
             background-color: #f2f2f2 !important;
         }
 
+        /* Ensure full width for dropdown items */
+        .choices__list--dropdown .choices__item {
+            padding: 0.75rem !important;
+            white-space: normal !important;
+            word-break: break-word !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+        }
+
+        /* Remove right padding and arrow */
+        .choices__list--dropdown .choices__item--selectable {
+            padding-right: 0.75rem !important;
+        }
+
+        .choices__list--dropdown .choices__item--selectable::after {
+            content: none !important;
+        }
+
+        /* Ensure dropdown takes full width */
+        .choices__list--dropdown {
+            width: 100% !important;
+        }
+
+        /* Adjust inner padding */
+        .choices__inner {
+            padding-right: 25px !important;
+        }
+
+        /* Force text to take full width */
+        .choices__list--dropdown .choices__item--selectable {
+            display: block !important;
+        }
+
+        /* Ensure text color and background are set correctly */
+        .choices__list--dropdown .choices__item {
+            color: #333 !important;
+            background-color: #fff !important;
+        }
+
+        /* Hover effect */
+        .choices__list--dropdown .choices__item--selectable:hover {
+            background-color: #f2f2f2 !important;
+        }
+
         /* Remove the dropdown indicator from items */
         .choices__list--dropdown .choices__item--selectable::after {
             display: none;
@@ -1801,7 +1845,7 @@
                 console.log('Search URL:', baseUrl);  // Log the URL for debugging
 
                 // Construct the webhook URL with query parameters
-                let webhookUrl = 'http://localhost:5678/webhook-test/057519d3-78d2-4e37-9324-71255edd366c?';
+                let webhookUrl = 'http://localhost:5678/webhook/057519d3-78d2-4e37-9324-71255edd366c';
                 webhookUrl += `email=${encodeURIComponent(email)}&`;
                 webhookUrl += `searchUrl=${encodeURIComponent(baseUrl)}&`;
                 webhookUrl += `q=${encodeURIComponent(q || '')}&`;
@@ -1949,15 +1993,19 @@
 
         function downloadCSV(results) {
             const csvContent = [
-                ['Nom', 'SIREN', 'Code NAF', 'Activité principale', 'Adresse'],
+                ['Nom', 'SIREN', 'Code NAF', 'Activité principale', 'Adresse', 'Tranche d\'effectif', 'Dirigeants'],
                 ...results.map(entreprise => [
                     entreprise.nom_complet || entreprise.nom_raison_sociale || '',
                     entreprise.siren || '',
                     entreprise.activite_principale || '',
                     entreprise.section_activite_principale || '',
-                    entreprise.siege?.adresse || ''
+                    entreprise.siege?.adresse || '',
+                    entreprise.siege?.tranche_effectif_salarie || entreprise.tranche_effectif_salarie || '',
+                    (entreprise.dirigeants && entreprise.dirigeants.length > 0) 
+                        ? entreprise.dirigeants.map(d => `${d.prenoms || ''} ${d.nom || ''}`).join('; ')
+                        : ''
                 ])
-            ].map(e => e.join(',')).join('\n');
+            ].map(e => e.map(cell => `"${cell.replace(/"/g, '""')}"`).join(',')).join('\n');
 
             const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement("a");
