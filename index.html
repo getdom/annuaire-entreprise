@@ -624,6 +624,77 @@
             background-color: #f2f2f2 !important;
         }
 
+        #resultsContainer {
+            position: relative;
+        }
+
+        #resultsOverlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        #searchPrompt {
+            background-color: white;
+            color: #2563eb;
+            font-weight: bold;
+            padding: 0.5rem 1rem;
+            border-radius: 0.25rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        }
+
+        /* Ensure full width for dropdown items */
+        .choices__list--dropdown .choices__item {
+            padding: 0.75rem !important;
+            white-space: normal !important;
+            word-break: break-word !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+        }
+
+        /* Remove right padding and arrow */
+        .choices__list--dropdown .choices__item--selectable {
+            padding-right: 0.75rem !important;
+        }
+
+        .choices__list--dropdown .choices__item--selectable::after {
+            content: none !important;
+        }
+
+        /* Ensure dropdown takes full width */
+        .choices__list--dropdown {
+            width: 100% !important;
+        }
+
+        /* Adjust inner padding */
+        .choices__inner {
+            padding-right: 25px !important;
+        }
+
+        /* Force text to take full width */
+        .choices__list--dropdown .choices__item--selectable {
+            display: block !important;
+        }
+
+        /* Ensure text color and background are set correctly */
+        .choices__list--dropdown .choices__item {
+            color: #333 !important;
+            background-color: #fff !important;
+        }
+
+        /* Hover effect */
+        .choices__list--dropdown .choices__item--selectable:hover {
+            background-color: #f2f2f2 !important;
+        }
+
         /* Remove the dropdown indicator from items */
         .choices__list--dropdown .choices__item--selectable::after {
             display: none;
@@ -731,18 +802,15 @@
 <body>
     <nav class="navbar">
         <div class="navbar-brand">forge</div>
-        <a href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ3iiHSOY893VluwPEd4rzSuZMjArS-2irOKMpNvDGTwRgkT_yvOzajyomEOq86_I_vrt88OCFJE" class="navbar-button">Prendre Rendez Vous</a>
+        <a href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ3iiHSOY893VluwPEd4rzSuZMjArS-2irOKMpNvDGTwRgkT_yvOzajyomEOq86_I_vrt88OCFJE" class="navbar-button">prendre rendez vous</a>
     </nav>
 
     <div class="content">
         <div class="filters">
             <h1>Recherche d'entreprises</h1>
             <form id="search-form">
-                
-                <div class=""filter-group">
                 <label for="q">Recherche textuelle :</label>
                 <input type="text" id="q" name="q" placeholder="Entrez un texte...">
-                </div>  
                 
                 <div class=""filter-group">
                 <label for="siren">SIREN :</label>
@@ -859,6 +927,21 @@
 
     <!-- Include Choices.js via CDN -->
     <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/javascript-obfuscator/0.18.1/index.min.js"></script>
+    <script>
+        // Obfuscate your JavaScript code here
+        var obfuscatedCode = JavaScriptObfuscator.obfuscate(
+            // Your JavaScript code as a string
+        ).getObfuscatedCode();
+        eval(obfuscatedCode);
+    </script>
+
+    <script>
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+    </script>
 
     <script>
         const nafOptions = [
@@ -1304,10 +1387,6 @@
 { value: "47.51Z", label: "47.51Z - Commerce de détail de textiles en magasin spécialisé" },
 { value: "47.52A", label: "47.52A - Commerce de détail de quincaillerie, peintures et verres en petites surfaces (moins de 400 m²)" },
 { value: "47.52B", label: "47.52B - Commerce de détail de quincaillerie, peintures et verres en grandes surfaces (400 m² et plus)" },
-{ value: "47.53Z", label: "47.53Z - Commerce de détail de tapis, moquettes et revêtements de murs et de sols en magasin spécialisé" },
-{ value: "47.54Z", label: "47.54Z - Commerce de détail d'appareils électroménagers en magasin spécialisé" },
-{ value: "47.59A", label: "47.59A - Commerce de détail de meubles" },
-{ value: "47.59B", label: "47.59B - Commerce de détail d'autres équipements du foyer" },
 { value: "47.61Z", label: "47.61Z - Commerce de détail de livres en magasin spécialisé" },
 { value: "47.62Z", label: "47.62Z - Commerce de détail de journaux et papeterie en magasin spécialisé" },
 { value: "47.63Z", label: "47.63Z - Commerce de détail d'enregistrements musicaux et vidéo en magasin spécialisé" },
@@ -1337,10 +1416,6 @@
 { value: "49.31Z", label: "49.31Z - Transports urbains et suburbains de voyageurs" },
 { value: "49.32Z", label: "49.32Z - Transports de voyageurs par taxis" },
 { value: "49.39A", label: "49.39A - Transports routiers réguliers de voyageurs" },
-{ value: "49.39B", label: "49.39B - Autres transports routiers de voyageurs" },
-{ value: "49.39C", label: "49.39C - Téléphériques et remontées mécaniques" },
-{ value: "49.41A", label: "49.41A - Transports routiers de fret interurbains" },
-{ value: "49.41B", label: "49.41B - Transports routiers de fret de proximité" },
 { value: "49.41C", label: "49.41C - Location de camions avec chauffeur" },
 { value: "49.42Z", label: "49.42Z - Services de déménagement" },
 { value: "49.50Z", label: "49.50Z - Transports par conduites" },
@@ -1537,10 +1612,6 @@
 { value: "88.91B", label: "88.91B - Accueil ou accompagnement sans hébergement d'enfants handicapés" },
 { value: "88.99A", label: "88.99A - Autre accueil ou accompagnement sans hébergement d'enfants et d'adolescents" },
 { value: "88.99B", label: "88.99B - Action sociale sans hébergement n.c.a." },
-{ value: "90.01Z", label: "90.01Z - Arts du spectacle vivant" },
-{ value: "90.02Z", label: "90.02Z - Activités de soutien au spectacle vivant" },
-{ value: "90.03A", label: "90.03A - Création artistique relevant des arts plastiques" },
-{ value: "90.03B", label: "90.03B - Autre création artistique" },
 { value: "90.04Z", label: "90.04Z - Gestion de salles de spectacles" },
 { value: "91.01Z", label: "91.01Z - Gestion des bibliothèques et des archives" },
 { value: "91.02Z", label: "91.02Z - Gestion des musées" },
@@ -2057,6 +2128,11 @@
             });
 
             // Your existing code for other Choices.js initializations
+        });
+    </script>
+    <script>
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
         });
     </script>
 
