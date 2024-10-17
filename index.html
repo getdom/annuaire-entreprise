@@ -6,10 +6,10 @@
     <title>Forge - Recherche d'entreprise</title>
     <link rel="icon" type="image/png" href="icon.png">
     
-    <!-- Include Choices.js via CDN -->
+    <!-- Choices.js for dropdown -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css"/>
     
-    <!-- Include Inter font -->
+    <!--Inter font -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
 
     <style>
@@ -1764,13 +1764,10 @@
             const fakeResults = createFakeTableData();
             displayResults(fakeResults);
             
-            // Initialize your form event listener here
             document.getElementById('search-form').addEventListener('submit', function(event) {
-                // Your existing form submission code
             });
 
             initializeNafDropdown();
-            // Initialize Choices.js for multiselects
             const nafChoices = new Choices('#code_naf', { removeItemButton: true, searchPlaceholderValue: 'Rechercher un code NAF...' });
             const departementChoices = new Choices('#departement', {
                 choices: departementOptions,
@@ -2084,7 +2081,6 @@
             }
         }
 
-        // Add this function to your existing JavaScript
         function createFakeTableData() {
             const fakeData = [];
             for (let i = 1; i <= 20; i++) {
@@ -2126,8 +2122,6 @@
                 removeItemButton: true,
                 placeholderValue: 'Sélectionnez les codes NAF',
             });
-
-            // Your existing code for other Choices.js initializations
         });
     </script>
     <script>
